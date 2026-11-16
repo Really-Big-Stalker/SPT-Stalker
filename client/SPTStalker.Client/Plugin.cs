@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SPTStalker.Client
@@ -19,6 +20,8 @@ namespace SPTStalker.Client
         internal static ConfigEntry<float> DetectorVolume;
         internal static ConfigEntry<float> HumVolume;
         internal static ConfigEntry<bool> DebugMarkers;
+        internal static ConfigEntry<bool> RadiationEnabled;
+        internal static ConfigEntry<float> GeigerVolume;
 
         private void Awake()
         {
@@ -31,6 +34,10 @@ namespace SPTStalker.Client
             DetectorRange = Config.Bind("Detector", "Range", 20f, new ConfigDescription("Metres from an anomaly's edge at which the detector starts beeping.", new AcceptableValueRange<float>(5f, 60f)));
             DetectorVolume = Config.Bind("Detector", "Volume", 0.5f, new ConfigDescription("Detector beep volume.", new AcceptableValueRange<float>(0f, 1f)));
             DebugMarkers = Config.Bind("Debug", "Show markers", false, "Draw a visible sphere for every anomaly (for testing layouts).");
+            RadiationEnabled = Config.Bind("Radiation", "Enabled", true, "Track radiation dose (shown in the health screen's radiation meter).");
+            GeigerVolume = Config.Bind("Radiation", "Geiger counter volume", 0.5f, new ConfigDescription("Volume of the Geiger counter clicks.", new AcceptableValueRange<float>(0f, 1f)));
+
+            RadiationPatches.Apply(new Harmony("com.sptstalker.client"));
 
             var host = new GameObject("SPTStalker.AnomalyManager");
             DontDestroyOnLoad(host);

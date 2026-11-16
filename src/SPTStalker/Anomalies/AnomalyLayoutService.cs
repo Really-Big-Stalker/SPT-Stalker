@@ -33,7 +33,7 @@ public class AnomalyLayoutService(
     public void GenerateForRaid(MongoId sessionId, string locationName, LocationBase raidLocation)
     {
         var mapKey = locationName.ToLowerInvariant();
-        var layout = new AnomalyLayout { Location = mapKey };
+        var layout = new AnomalyLayout { Location = mapKey, Radiation = _config.Radiation, Artifacts = ArtifactRadiation() };
         _layouts[sessionId] = layout;
 
         if (!_config.Enabled || mapKey == "hideout")
@@ -133,6 +133,16 @@ public class AnomalyLayoutService(
 
         logger.Info($"[SPT-Stalker] {locationName}: {layout.Fields.Count} anomaly fields, " +
                     $"{layout.Fields.Count(f => f.Artifact.Length > 0)} with artifacts");
+    }
+
+    private List<ArtifactRadiationDto> ArtifactRadiation()
+    {
+        var byTier = _config.Radiation.ArtifactRadiationByTier;
+        return artifactRegistry.All.Select(a => new ArtifactRadiationDto
+        {
+            Tpl = a.Tpl.ToString(),
+            RadiationPerSecond = byTier.Length == 0 ? 0 : byTier[Math.Clamp(a.Definition.Tier, 1, byTier.Length) - 1]
+        }).ToList();
     }
 
     private List<Vector3> CandidatePoints(string locationName)

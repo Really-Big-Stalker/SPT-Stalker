@@ -11,6 +11,55 @@ namespace SPTStalker.Client
         public string location;
         public AnomalyFieldData[] fields;
         public AnomalyTypeData[] types;
+        public RadiationSettings radiation;
+        public ArtifactRadiation[] artifacts;
+    }
+
+    [Serializable]
+    internal class RadiationSettings
+    {
+        public bool enabled;
+        public float maxDose;
+        public float decayPerSecond;
+        public float[] artifactRadiationByTier;
+        public string[] shieldedSlots;
+        public GasMask[] gasMasks;
+        public RadiationCure[] cures;
+        public RadiationStage[] stages;
+    }
+
+    [Serializable]
+    internal class GasMask
+    {
+        public string name;
+        public string tpl;
+        public float protection;
+    }
+
+    [Serializable]
+    internal class RadiationCure
+    {
+        public string name;
+        public string tpl;
+        public float doseReduction;
+    }
+
+    [Serializable]
+    internal class RadiationStage
+    {
+        public string name;
+        public float dose;
+        public float damagePerSecond;
+        public string[] bodyParts;
+        public float sicknessEverySeconds;
+        public bool gameRadiationEffect;
+    }
+
+    [Serializable]
+    internal class ArtifactRadiation
+    {
+        public string tpl;
+        public float radiationPerSecond;
     }
 
     [Serializable]
@@ -53,6 +102,10 @@ namespace SPTStalker.Client
         public float lightIntensity;
         public float flicker;
         public float humPitch;
+        public float radiationPerSecond;
+        public float auraRadiationPerSecond;
+        public float auraRadiusMultiplier;
+        public float maskProtection;
     }
 #pragma warning restore 0649
 }

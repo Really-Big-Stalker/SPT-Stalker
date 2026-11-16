@@ -127,6 +127,92 @@ namespace SPTStalker.Client
 
         public static void DoIntoxication(object health) => Call(health, "DoIntoxication", Type.EmptyTypes);
 
+        public static void DoRadExposure(object health) => Call(health, "DoRadExposure", Type.EmptyTypes);
+
+        // ---------------------------------------------------------------- equipment
+
+        private static Type _equipmentSlotType;
+
+        /// <summary>Template id of the item in the player's face-cover slot (gas mask, respirator...), or null.</summary>
+        public static string FaceCoverTemplateId(object player)
+        {
+            var item = SlotItem(player, "FaceCover");
+            return item == null ? null : TemplateId(item);
+        }
+
+        /// <summary>Template ids of everything the player carries, skipping the given equipment slots.</summary>
+        public static System.Collections.Generic.List<string> CarriedTemplateIds(object player, string[] skipSlots)
+        {
+            var result = new System.Collections.Generic.List<string>();
+            var slotType = EquipmentSlotType();
+            if (slotType == null)
+            {
+                return result;
+            }
+
+            foreach (var name in Enum.GetNames(slotType))
+            {
+                if (skipSlots != null && skipSlots.Contains(name))
+                {
+                    continue;
+                }
+
+                var root = SlotItem(player, name);
+                if (root == null)
+                {
+                    continue;
+                }
+
+                var all = root.GetType().GetMethod("GetAllVisibleItems", BindingFlags.Instance | BindingFlags.Public)?.Invoke(root, null)
+                    as System.Collections.IEnumerable;
+                if (all == null)
+                {
+                    result.Add(TemplateId(root));
+                    continue;
+                }
+
+                foreach (var item in all)
+                {
+                    result.Add(TemplateId(item));
+                }
+            }
+
+            return result;
+        }
+
+        public static string TemplateId(object item)
+        {
+            return item?.GetType().GetProperty("StringTemplateId", BindingFlags.Instance | BindingFlags.Public)?.GetValue(item) as string;
+        }
+
+        private static object SlotItem(object player, string slotName)
+        {
+            try
+            {
+                var equipment = player.GetType().GetProperty("Equipment", BindingFlags.Instance | BindingFlags.Public)?.GetValue(player);
+                var slotType = EquipmentSlotType();
+                if (equipment == null || slotType == null)
+                {
+                    return null;
+                }
+
+                var slot = equipment.GetType().GetMethod("GetSlot", new[] { slotType })
+                    ?.Invoke(equipment, new[] { Enum.Parse(slotType, slotName) });
+                return slot?.GetType().GetProperty("ContainedItem", BindingFlags.Instance | BindingFlags.Public)?.GetValue(slot);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static Type EquipmentSlotType()
+        {
+            return _equipmentSlotType ??= AppDomain.CurrentDomain.GetAssemblies()
+                .Select(a => a.GetType("EFT.InventoryLogic.EquipmentSlot", false))
+                .FirstOrDefault(t => t != null);
+        }
+
         // ---------------------------------------------------------------- server
 
         public static string GetJson(string path) => _getJson.Invoke(null, new object[] { path }) as string;

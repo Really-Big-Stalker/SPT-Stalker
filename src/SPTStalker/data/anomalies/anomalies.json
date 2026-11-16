@@ -236,7 +236,11 @@
         ],
         "lightIntensity": 3,
         "flicker": 2.5,
-        "humPitch": 60
+        "humPitch": 60,
+        "radiationPerSecond": 0.3,
+        "auraRadiationPerSecond": 0.0,
+        "auraRadiusMultiplier": 3,
+        "maskProtection": 0.3
       }
     },
     {
@@ -270,7 +274,11 @@
         ],
         "lightIntensity": 4,
         "flicker": 6,
-        "humPitch": 120
+        "humPitch": 120,
+        "radiationPerSecond": 0.2,
+        "auraRadiationPerSecond": 0.0,
+        "auraRadiusMultiplier": 3,
+        "maskProtection": 0.0
       }
     },
     {
@@ -302,7 +310,11 @@
         ],
         "lightIntensity": 1.2,
         "flicker": 0.6,
-        "humPitch": 45
+        "humPitch": 45,
+        "radiationPerSecond": 0.3,
+        "auraRadiationPerSecond": 0.05,
+        "auraRadiusMultiplier": 3,
+        "maskProtection": 0.0
       }
     },
     {
@@ -339,7 +351,11 @@
         ],
         "lightIntensity": 2,
         "flicker": 0.8,
-        "humPitch": 35
+        "humPitch": 35,
+        "radiationPerSecond": 0.8,
+        "auraRadiationPerSecond": 0.15,
+        "auraRadiusMultiplier": 3,
+        "maskProtection": 0.0
       }
     },
     {
@@ -371,7 +387,11 @@
         ],
         "lightIntensity": 2,
         "flicker": 1.5,
-        "humPitch": 70
+        "humPitch": 70,
+        "radiationPerSecond": 0.5,
+        "auraRadiationPerSecond": 0.1,
+        "auraRadiusMultiplier": 3,
+        "maskProtection": 0.85
       }
     },
     {
@@ -404,8 +424,119 @@
         ],
         "lightIntensity": 0,
         "flicker": 0,
-        "humPitch": 0
+        "humPitch": 0,
+        "radiationPerSecond": 2.5,
+        "auraRadiationPerSecond": 0.6,
+        "auraRadiusMultiplier": 2,
+        "maskProtection": 0.6
       }
     }
-  ]
+  ],
+  "radiation": {
+    "enabled": true,
+    "maxDose": 100,
+    "decayPerSecond": 0.01,
+    "artifactRadiationByTier": [
+      0.02,
+      0.04,
+      0.08,
+      0.15
+    ],
+    "shieldedSlots": [
+      "SecuredContainer"
+    ],
+    "gasMasks": [
+      {
+        "name": "GP-7 gas mask",
+        "tpl": "60363c0c92ec1c31037959f5",
+        "protection": 0.9
+      },
+      {
+        "name": "GP-5 gas mask",
+        "tpl": "5b432c305acfc40019478128",
+        "protection": 0.8
+      },
+      {
+        "name": "Pestily plague mask",
+        "tpl": "5e54f79686f7744022011103",
+        "protection": 0.5
+      },
+      {
+        "name": "Respirator",
+        "tpl": "59e7715586f7742ee5789605",
+        "protection": 0.35
+      }
+    ],
+    "cures": [
+      {
+        "name": "Tarkovskaya vodka",
+        "tpl": "5d40407c86f774318526545a",
+        "doseReduction": 30
+      },
+      {
+        "name": "Fierce Hatchling moonshine",
+        "tpl": "5d1b376e86f774252519444e",
+        "doseReduction": 40
+      },
+      {
+        "name": "Dan Jackiel whiskey",
+        "tpl": "5d403f9186f7743cac3f229b",
+        "doseReduction": 20
+      },
+      {
+        "name": "Tarkovskaya vodka (bad)",
+        "tpl": "614451b71e5874611e2c7ae5",
+        "doseReduction": 15
+      }
+    ],
+    "stages": [
+      {
+        "name": "Irradiated",
+        "dose": 25,
+        "damagePerSecond": 0.05,
+        "bodyParts": [
+          "Chest",
+          "Stomach"
+        ],
+        "sicknessEverySeconds": 0,
+        "gameRadiationEffect": false
+      },
+      {
+        "name": "Radiation sickness",
+        "dose": 50,
+        "damagePerSecond": 0.15,
+        "bodyParts": [
+          "Chest",
+          "Stomach",
+          "Head"
+        ],
+        "sicknessEverySeconds": 90,
+        "gameRadiationEffect": false
+      },
+      {
+        "name": "Severe radiation sickness",
+        "dose": 75,
+        "damagePerSecond": 0.4,
+        "bodyParts": [
+          "Chest",
+          "Stomach",
+          "Head"
+        ],
+        "sicknessEverySeconds": 40,
+        "gameRadiationEffect": true
+      },
+      {
+        "name": "Lethal dose",
+        "dose": 95,
+        "damagePerSecond": 1.5,
+        "bodyParts": [
+          "Chest",
+          "Stomach",
+          "Head"
+        ],
+        "sicknessEverySeconds": 20,
+        "gameRadiationEffect": true
+      }
+    ]
+  }
 }

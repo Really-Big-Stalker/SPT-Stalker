@@ -30,6 +30,30 @@ namespace SPTStalker.Client
             return _beep;
         }
 
+        private static AudioClip _click;
+
+        /// <summary>Single Geiger counter tick: a few milliseconds of sharp noise.</summary>
+        public static AudioClip GeigerClick()
+        {
+            if (_click != null)
+            {
+                return _click;
+            }
+
+            var n = (int)(Rate * 0.004f);
+            var data = new float[n];
+            var rng = new System.Random(7);
+            for (var i = 0; i < n; i++)
+            {
+                var env = Mathf.Exp(-i / (n * 0.25f));
+                data[i] = env * (float)(rng.NextDouble() * 2 - 1);
+            }
+
+            _click = AudioClip.Create("sptstalker_geiger", n, 1, Rate, false);
+            _click.SetData(data, 0);
+            return _click;
+        }
+
         /// <summary>
         /// One-second seamless loop: a low hum at `pitch` with harmonics, plus crackle for electric/fiery types.
         /// The pitch is rounded to whole Hz so the loop has a whole number of cycles (no click at the seam).

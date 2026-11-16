@@ -75,26 +75,50 @@ namespace SPTStalker.Client
         /// <summary>Distance from the anomaly's edge (0 when inside).</summary>
         public float EdgeDistance(Vector3 point) => Mathf.Max(0f, Vector3.Distance(point, Position) - Radius);
 
-        public void Tick(Vector3 playerPos, object health, float dt)
+        /// <summary>
+        /// Runs the anomaly for one frame. Returns the radiation around the player from this anomaly
+        /// (ambient, for the Geiger counter) and how much of it gets through the gas mask (intake).
+        /// </summary>
+        /// <param name="maskFactor">0..1 protection of the gas mask the player is wearing.</param>
+        public (float ambient, float intake) Tick(Vector3 playerPos, object health, float dt, float maskFactor)
         {
             Animate(dt);
 
             var flat = new Vector2(playerPos.x - Position.x, playerPos.z - Position.z).magnitude;
+            var level = Mathf.Abs(playerPos.y - Position.y) < VerticalTolerance * 2f;
             var inside = flat < Radius && Mathf.Abs(playerPos.y - Position.y) < VerticalTolerance;
+
+            // What a gas mask lets through of this anomaly's airborne harm
+            var through = 1f - Mathf.Clamp01(maskFactor) * Mathf.Clamp01(_effect.maskProtection);
+
+            // Radiation: full inside, fading out across the aura ring around it
+            var ambient = 0f;
+            if (inside)
+            {
+                ambient = _effect.radiationPerSecond;
+            }
+            else if (level && _effect.auraRadiationPerSecond > 0)
+            {
+                var aura = Radius * Mathf.Max(1f, _effect.auraRadiusMultiplier);
+                if (flat < aura)
+                {
+                    ambient = _effect.auraRadiationPerSecond * (1f - (flat - Radius) / Mathf.Max(0.01f, aura - Radius));
+                }
+            }
 
             if (inside && !_inside)
             {
-                OnEnter(playerPos, health);
+                OnEnter(playerPos, health, through);
             }
 
             _inside = inside;
             if (!inside)
             {
                 _dotPending = 0;
-                return;
+                return (ambient, ambient * through);
             }
 
-            // Burst effects (springboard slam, electro discharge...)
+            // Burst effects (springboard slam, electro discharge...): a mask doesn't help
             if (_effect.burstDamage > 0)
             {
                 _burstTimer -= dt;
@@ -104,10 +128,10 @@ namespace SPTStalker.Client
                 }
             }
 
-            // Damage over time (burner, acid, radiation...)
+            // Damage over time (burner, acid, radiation...): airborne part reduced by the mask
             if (_effect.damagePerSecond > 0)
             {
-                _dotPending += _effect.damagePerSecond * Plugin.DamageMultiplier.Value * dt;
+                _dotPending += _effect.damagePerSecond * through * Plugin.DamageMultiplier.Value * dt;
                 _dotTimer -= dt;
                 if (_dotTimer <= 0)
                 {
@@ -116,9 +140,11 @@ namespace SPTStalker.Client
                     _dotPending = 0;
                 }
             }
+
+            return (ambient, ambient * through);
         }
 
-        private void OnEnter(Vector3 playerPos, object health)
+        private void OnEnter(Vector3 playerPos, object health, float through)
         {
             _dotTimer = DamageTick;
             if (_effect.burstDamage > 0)
@@ -126,7 +152,7 @@ namespace SPTStalker.Client
                 Burst(playerPos, health);
             }
 
-            if (Chance(_effect.intoxicationChancePercent))
+            if (Chance(_effect.intoxicationChancePercent * through))
             {
                 EftBridge.DoIntoxication(health);
             }

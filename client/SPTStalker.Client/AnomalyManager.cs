@@ -21,6 +21,7 @@ namespace SPTStalker.Client
         private bool _bridgeFailed;
 
         private AudioSource _detector;
+        private RadiationSystem _radiation;
         private float _beepTimer;
 
         private void Update()
@@ -64,13 +65,22 @@ namespace SPTStalker.Client
             var pos = EftBridge.PlayerPosition(player);
             var dt = Time.deltaTime;
             var nearest = float.MaxValue;
+            var mask = _radiation?.MaskFactor ?? 0f;
+            float ambient = 0f, intake = 0f;
             foreach (var anomaly in _anomalies)
             {
-                anomaly.Tick(pos, health, dt);
+                var (a, i) = anomaly.Tick(pos, health, dt, mask);
+                ambient += a;
+                intake += i;
                 nearest = Mathf.Min(nearest, anomaly.EdgeDistance(pos));
             }
 
             UpdateDetector(nearest, dt);
+
+            if (_radiation != null && Plugin.RadiationEnabled.Value)
+            {
+                _radiation.Tick(player, health, ambient, intake, dt);
+            }
         }
 
         private void TryBuild()
@@ -103,9 +113,8 @@ namespace SPTStalker.Client
             }
 
             var location = EftBridge.LocationId(world).ToLowerInvariant();
-            if (layout?.fields == null || layout.fields.Length == 0)
+            if (layout == null)
             {
-                Plugin.Log.LogInfo($"SPT-Stalker: no anomalies on {location} this raid");
                 return;
             }
 
@@ -115,8 +124,21 @@ namespace SPTStalker.Client
                 return;
             }
 
-            var effects = (layout.types ?? Array.Empty<AnomalyTypeData>()).Where(t => t.effect != null).ToDictionary(t => t.key, t => t.effect);
             _root = new GameObject("SPTStalker.Anomalies");
+
+            // Radiation runs on every map (carried artifacts irradiate you even without anomalies)
+            if (layout.radiation != null && layout.radiation.enabled)
+            {
+                _radiation = new RadiationSystem(layout.radiation, layout.artifacts, _root);
+            }
+
+            if (layout.fields == null || layout.fields.Length == 0)
+            {
+                Plugin.Log.LogInfo($"SPT-Stalker: no anomalies on {location} this raid");
+                return;
+            }
+
+            var effects = (layout.types ?? Array.Empty<AnomalyTypeData>()).Where(t => t.effect != null).ToDictionary(t => t.key, t => t.effect);
             var seed = 1;
             foreach (var field in layout.fields)
             {
@@ -172,6 +194,8 @@ namespace SPTStalker.Client
             }
 
             _anomalies.Clear();
+            _radiation?.Dispose();
+            _radiation = null;
             if (_root != null)
             {
                 Destroy(_root);

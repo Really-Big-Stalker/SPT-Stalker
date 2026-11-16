@@ -22,9 +22,94 @@ public record AnomalyFile
 
     [JsonPropertyName("types")]
     public List<AnomalyType> Types { get; set; } = [];
+
+    [JsonPropertyName("radiation")]
+    public RadiationSettings Radiation { get; set; } = new();
 }
 
-public record MapAnomalySettings
+/// <summary>The player's radiation dose: how it builds up, what it does, and what protects against it.</summary>
+public record RadiationSettings
+{
+    [JsonPropertyName("enabled")]
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>Dose shown as "current / max" in the health screen's radiation meter.</summary>
+    [JsonPropertyName("maxDose")]
+    public float MaxDose { get; set; } = 100;
+
+    /// <summary>Dose the body clears by itself per second.</summary>
+    [JsonPropertyName("decayPerSecond")]
+    public float DecayPerSecond { get; set; } = 0.01f;
+
+    /// <summary>Radiation per second given off by each carried artifact, by tier 1-4.</summary>
+    [JsonPropertyName("artifactRadiationByTier")]
+    public float[] ArtifactRadiationByTier { get; set; } = [0.02f, 0.04f, 0.08f, 0.15f];
+
+    /// <summary>Equipment slots whose contents don't irradiate you (the secure container counts as lead-lined).</summary>
+    [JsonPropertyName("shieldedSlots")]
+    public List<string> ShieldedSlots { get; set; } = ["SecuredContainer"];
+
+    [JsonPropertyName("gasMasks")]
+    public List<GasMaskDefinition> GasMasks { get; set; } = [];
+
+    [JsonPropertyName("cures")]
+    public List<RadiationCure> Cures { get; set; } = [];
+
+    /// <summary>What happens at each dose level (highest reached applies).</summary>
+    [JsonPropertyName("stages")]
+    public List<RadiationStage> Stages { get; set; } = [];
+}
+
+public record GasMaskDefinition
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
+
+    [JsonPropertyName("tpl")]
+    public string Tpl { get; set; } = "";
+
+    /// <summary>0..1 share of airborne harm blocked.</summary>
+    [JsonPropertyName("protection")]
+    public float Protection { get; set; }
+}
+
+public record RadiationCure
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
+
+    [JsonPropertyName("tpl")]
+    public string Tpl { get; set; } = "";
+
+    /// <summary>Dose removed when used/drunk.</summary>
+    [JsonPropertyName("doseReduction")]
+    public float DoseReduction { get; set; }
+}
+
+public record RadiationStage
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
+
+    /// <summary>Stage applies from this dose upwards.</summary>
+    [JsonPropertyName("dose")]
+    public float Dose { get; set; }
+
+    /// <summary>Radiation damage per second while at this stage.</summary>
+    [JsonPropertyName("damagePerSecond")]
+    public float DamagePerSecond { get; set; }
+
+    [JsonPropertyName("bodyParts")]
+    public List<string> BodyParts { get; set; } = ["Chest", "Stomach"];
+
+    /// <summary>Seconds between bouts of nausea/dizziness (contusion); 0 = none.</summary>
+    [JsonPropertyName("sicknessEverySeconds")]
+    public float SicknessEverySeconds { get; set; }
+
+    /// <summary>Also start the game's own "radiation exposure" status effect when entering this stage.</summary>
+    [JsonPropertyName("gameRadiationEffect")]
+    public bool GameRadiationEffect { get; set; }
+}
 {
     /// <summary>[min, max] anomaly fields per raid.</summary>
     [JsonPropertyName("fields")]
@@ -123,6 +208,24 @@ public record AnomalyEffect
     /// <summary>Hum pitch (Hz) of the anomaly's sound; 0 = silent.</summary>
     [JsonPropertyName("humPitch")]
     public float HumPitch { get; set; } = 80;
+
+    /// <summary>Radiation dose per second while inside the anomaly.</summary>
+    [JsonPropertyName("radiationPerSecond")]
+    public float RadiationPerSecond { get; set; }
+
+    /// <summary>Radiation dose per second in the area around it (out to radius x auraRadiusMultiplier).</summary>
+    [JsonPropertyName("auraRadiationPerSecond")]
+    public float AuraRadiationPerSecond { get; set; }
+
+    [JsonPropertyName("auraRadiusMultiplier")]
+    public float AuraRadiusMultiplier { get; set; } = 3;
+
+    /// <summary>
+    /// 0..1: how much of this anomaly's airborne harm (damage over time, radiation, intoxication) a gas mask can
+    /// block. Multiplied by the mask's own protection. Bursts (slams, discharges) are never blocked.
+    /// </summary>
+    [JsonPropertyName("maskProtection")]
+    public float MaskProtection { get; set; }
 }
 
 // ------------------------------------------------------------- layout sent to the client
@@ -138,6 +241,22 @@ public record AnomalyLayout
 
     [JsonPropertyName("types")]
     public List<AnomalyTypeDto> Types { get; set; } = [];
+
+    [JsonPropertyName("radiation")]
+    public RadiationSettings Radiation { get; set; } = new();
+
+    /// <summary>Artifact templates and how much radiation each gives off when carried.</summary>
+    [JsonPropertyName("artifacts")]
+    public List<ArtifactRadiationDto> Artifacts { get; set; } = [];
+}
+
+public record ArtifactRadiationDto
+{
+    [JsonPropertyName("tpl")]
+    public string Tpl { get; set; } = "";
+
+    [JsonPropertyName("radiationPerSecond")]
+    public float RadiationPerSecond { get; set; }
 }
 
 public record AnomalyFieldDto
