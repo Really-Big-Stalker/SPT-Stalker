@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Roaming stalker AI (BepInEx plugin). Built on DrakiaXYZ's BigBrain, so it compiles against the game:
+      LibsDir must contain  Assembly-CSharp.dll (or SPT's public hollowed.dll)  and  DrakiaXYZ-BigBrain.dll.
+    CI fetches both (see .github/workflows/build.yml). Locally you can point it at your game:
+      dotnet build -c Release -p:GameDir="C:\SPT"
+    Output: bin/Release/SPTStalker.Bots.dll  ->  SPT/BepInEx/plugins/SPTStalker/
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SPTStalker.Bots</AssemblyName>
+    <RootNamespace>SPTStalker.Bots</RootNamespace>
+    <Version>0.1.0</Version>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LibsDir Condition="'$(LibsDir)' == ''">$(MSBuildThisFileDirectory)..\..\lib\</LibsDir>
+  </PropertyGroup>
+
+  <!-- CI / no game install: SPT's hollowed Assembly-CSharp + BigBrain release -->
+  <ItemGroup Condition="'$(GameDir)' == ''">
+    <Reference Include="Assembly-CSharp" HintPath="$(LibsDir)hollowed.dll" Private="False" />
+    <Reference Include="DrakiaXYZ-BigBrain" HintPath="$(LibsDir)DrakiaXYZ-BigBrain.dll" Private="False" />
+  </ItemGroup>
+
+  <!-- Local build against an SPT install -->
+  <ItemGroup Condition="'$(GameDir)' != ''">
+    <Reference Include="Assembly-CSharp" HintPath="$(GameDir)\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll" Private="False" />
+    <Reference Include="DrakiaXYZ-BigBrain" HintPath="$(GameDir)\BepInEx\plugins\DrakiaXYZ-BigBrain.dll" Private="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.*" IncludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

@@ -24,6 +24,22 @@ jobs:
       - name: Build client plugin
         run: dotnet build client/SPTStalker.Client/SPTStalker.Client.csproj -c Release
 
+      - name: Fetch reference assemblies for the bots plugin (not shipped)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p lib bigbrain
+          # SPT's public, code-stripped Assembly-CSharp (names only) for compiling against EFT types
+          curl -fsSL -o lib/hollowed.dll https://raw.githubusercontent.com/sp-tarkov/modules/4.1.2/project/Shared/Hollowed/hollowed.dll
+          # BigBrain (DrakiaXYZ) release for its CustomLayer/CustomLogic API
+          gh release download 1.5.0 -R DrakiaXYZ/SPT-BigBrain -D bigbrain
+          for z in bigbrain/*.zip bigbrain/*.7z; do [ -f "$z" ] && 7z x -y -obigbrain "$z" > /dev/null; done
+          find bigbrain -name 'DrakiaXYZ-BigBrain.dll' -exec cp {} lib/ \;
+          ls -la lib
+
+      - name: Build bots plugin
+        run: dotnet build bots/SPTStalker.Bots/SPTStalker.Bots.csproj -c Release
+
       - name: Package for SPT (user/mods/SPTStalker + BepInEx/plugins/SPTStalker)
         run: |
           mkdir -p dist/SPT/user/mods
@@ -32,6 +48,7 @@ jobs:
           find dist/SPT/user/mods/SPTStalker -maxdepth 1 -type f ! -name 'SPTStalker.dll' ! -name 'SPTStalker.pdb' ! -name 'bundles.json' -delete
           mkdir -p dist/SPT/BepInEx/plugins/SPTStalker
           cp client/SPTStalker.Client/bin/Release/SPTStalker.Client.dll dist/SPT/BepInEx/plugins/SPTStalker/
+          cp bots/SPTStalker.Bots/bin/Release/SPTStalker.Bots.dll dist/SPT/BepInEx/plugins/SPTStalker/
           ls -R dist
 
       - uses: actions/upload-artifact@v4
