@@ -51,9 +51,48 @@ def reset_scene():
     bpy.ops.wm.read_factory_settings(use_empty=True)
 
 
+def repair_glb(path):
+    """
+    Fix common glTF export mistakes that make Blender's importer crash (seen in AI/trimesh exports):
+    textures pointing at samplers that don't exist. Returns the path to import (a repaired temp copy if needed).
+    """
+    import json
+    import struct
+    import tempfile
+
+    with open(path, "rb") as fh:
+        data = fh.read()
+    if data[:4] != b"glTF":
+        return path
+    json_len = struct.unpack("<I", data[12:16])[0]
+    gltf = json.loads(data[20:20 + json_len])
+    rest = data[20 + json_len:]
+
+    samplers = gltf.get("samplers") or []
+    fixed = []
+    for i, tex in enumerate(gltf.get("textures", [])):
+        if "sampler" in tex and tex["sampler"] >= len(samplers):
+            del tex["sampler"]
+            fixed.append(i)
+    if not fixed:
+        return path
+
+    log(f"repaired glb: texture(s) {fixed} referenced missing samplers (now use the default sampler)")
+    js = json.dumps(gltf, separators=(",", ":")).encode()
+    js += b" " * ((-len(js)) % 4)
+    out = os.path.join(tempfile.mkdtemp(), os.path.basename(path))
+    with open(out, "wb") as fh:
+        fh.write(struct.pack("<III", 0x46546C67, 2, 12 + 8 + len(js) + len(rest)))
+        fh.write(struct.pack("<II", len(js), 0x4E4F534A) + js)
+        fh.write(rest)
+    return out
+
+
 def import_model(path):
     ext = os.path.splitext(path)[1].lower()
-    if ext in (".glb", ".gltf"):
+    if ext == ".glb":
+        bpy.ops.import_scene.gltf(filepath=repair_glb(path))
+    elif ext == ".gltf":
         bpy.ops.import_scene.gltf(filepath=path)
     elif ext == ".fbx":
         bpy.ops.import_scene.fbx(filepath=path)
