@@ -1,0 +1,411 @@
+{
+  "enabled": true,
+  "minDistanceFromPlayerSpawn": 40,
+  "minDistanceBetweenFields": 60,
+  "maps": {
+    "default": {
+      "fields": [
+        3,
+        6
+      ],
+      "anomaliesPerField": [
+        2,
+        5
+      ],
+      "fieldRadius": 8,
+      "artifactChancePercent": 40,
+      "typeWeights": {}
+    },
+    "bigmap": {
+      "fields": [
+        4,
+        7
+      ],
+      "anomaliesPerField": [
+        2,
+        5
+      ],
+      "fieldRadius": 8,
+      "artifactChancePercent": 40,
+      "typeWeights": {}
+    },
+    "woods": {
+      "fields": [
+        5,
+        8
+      ],
+      "anomaliesPerField": [
+        3,
+        6
+      ],
+      "fieldRadius": 10,
+      "artifactChancePercent": 45,
+      "typeWeights": {
+        "springboard": 4,
+        "vortex": 1.5
+      }
+    },
+    "shoreline": {
+      "fields": [
+        4,
+        7
+      ],
+      "anomaliesPerField": [
+        2,
+        5
+      ],
+      "fieldRadius": 9,
+      "artifactChancePercent": 40,
+      "typeWeights": {
+        "fruit_punch": 3
+      }
+    },
+    "lighthouse": {
+      "fields": [
+        3,
+        6
+      ],
+      "anomaliesPerField": [
+        2,
+        5
+      ],
+      "fieldRadius": 8,
+      "artifactChancePercent": 40,
+      "typeWeights": {
+        "electro": 4
+      }
+    },
+    "interchange": {
+      "fields": [
+        2,
+        4
+      ],
+      "anomaliesPerField": [
+        2,
+        4
+      ],
+      "fieldRadius": 6,
+      "artifactChancePercent": 35,
+      "typeWeights": {}
+    },
+    "rezervbase": {
+      "fields": [
+        3,
+        6
+      ],
+      "anomaliesPerField": [
+        2,
+        5
+      ],
+      "fieldRadius": 8,
+      "artifactChancePercent": 40,
+      "typeWeights": {
+        "radiation": 4
+      }
+    },
+    "tarkovstreets": {
+      "fields": [
+        3,
+        5
+      ],
+      "anomaliesPerField": [
+        2,
+        4
+      ],
+      "fieldRadius": 7,
+      "artifactChancePercent": 35,
+      "typeWeights": {}
+    },
+    "sandbox": {
+      "fields": [
+        2,
+        4
+      ],
+      "anomaliesPerField": [
+        2,
+        4
+      ],
+      "fieldRadius": 7,
+      "artifactChancePercent": 30,
+      "typeWeights": {}
+    },
+    "sandbox_high": {
+      "fields": [
+        2,
+        4
+      ],
+      "anomaliesPerField": [
+        2,
+        4
+      ],
+      "fieldRadius": 7,
+      "artifactChancePercent": 30,
+      "typeWeights": {}
+    },
+    "factory4_day": {
+      "fields": [
+        1,
+        2
+      ],
+      "anomaliesPerField": [
+        1,
+        3
+      ],
+      "fieldRadius": 5,
+      "artifactChancePercent": 30,
+      "typeWeights": {
+        "burner": 4
+      }
+    },
+    "factory4_night": {
+      "fields": [
+        1,
+        2
+      ],
+      "anomaliesPerField": [
+        1,
+        3
+      ],
+      "fieldRadius": 5,
+      "artifactChancePercent": 30,
+      "typeWeights": {
+        "burner": 4
+      }
+    },
+    "laboratory": {
+      "fields": [
+        1,
+        2
+      ],
+      "anomaliesPerField": [
+        1,
+        3
+      ],
+      "fieldRadius": 5,
+      "artifactChancePercent": 30,
+      "typeWeights": {
+        "fruit_punch": 4,
+        "electro": 3,
+        "springboard": 0,
+        "vortex": 0
+      }
+    },
+    "labyrinth": {
+      "fields": [
+        0,
+        0
+      ],
+      "anomaliesPerField": [
+        0,
+        0
+      ],
+      "fieldRadius": 0,
+      "artifactChancePercent": 0,
+      "typeWeights": {}
+    }
+  },
+  "types": [
+    {
+      "key": "burner",
+      "weight": 3,
+      "family": "thermal",
+      "radius": [
+        1.2,
+        2.0
+      ],
+      "effect": {
+        "damageType": "Flame",
+        "damagePerSecond": 7,
+        "burstDamage": 0,
+        "burstInterval": 3,
+        "bodyParts": [
+          "LeftLeg",
+          "RightLeg",
+          "Stomach",
+          "Chest"
+        ],
+        "stunSeconds": 0,
+        "contusionSeconds": 0,
+        "fractureChancePercent": 0,
+        "bleedChancePercent": 0,
+        "intoxicationChancePercent": 0,
+        "lightColor": [
+          1,
+          0.45,
+          0.1
+        ],
+        "lightIntensity": 3,
+        "flicker": 2.5,
+        "humPitch": 60
+      }
+    },
+    {
+      "key": "electro",
+      "weight": 3,
+      "family": "electro",
+      "radius": [
+        2.0,
+        3.0
+      ],
+      "effect": {
+        "damageType": "Environment",
+        "damagePerSecond": 0,
+        "burstDamage": 18,
+        "burstInterval": 1.8,
+        "bodyParts": [
+          "Chest",
+          "LeftArm",
+          "RightArm",
+          "Stomach"
+        ],
+        "stunSeconds": 0,
+        "contusionSeconds": 3,
+        "fractureChancePercent": 0,
+        "bleedChancePercent": 0,
+        "intoxicationChancePercent": 0,
+        "lightColor": [
+          0.4,
+          0.7,
+          1
+        ],
+        "lightIntensity": 4,
+        "flicker": 6,
+        "humPitch": 120
+      }
+    },
+    {
+      "key": "springboard",
+      "weight": 3,
+      "family": "gravitational",
+      "radius": [
+        1.5,
+        2.5
+      ],
+      "effect": {
+        "damageType": "Blunt",
+        "damagePerSecond": 0,
+        "burstDamage": 25,
+        "burstInterval": 2.5,
+        "bodyParts": [
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "stunSeconds": 0,
+        "contusionSeconds": 2,
+        "fractureChancePercent": 25,
+        "bleedChancePercent": 0,
+        "intoxicationChancePercent": 0,
+        "lightColor": [
+          0.7,
+          0.6,
+          1
+        ],
+        "lightIntensity": 1.2,
+        "flicker": 0.6,
+        "humPitch": 45
+      }
+    },
+    {
+      "key": "vortex",
+      "weight": 1,
+      "family": "gravitational",
+      "radius": [
+        3.0,
+        4.5
+      ],
+      "effect": {
+        "damageType": "Blunt",
+        "damagePerSecond": 4,
+        "burstDamage": 15,
+        "burstInterval": 2,
+        "bodyParts": [
+          "Head",
+          "Chest",
+          "Stomach",
+          "LeftArm",
+          "RightArm",
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "stunSeconds": 1.5,
+        "contusionSeconds": 4,
+        "fractureChancePercent": 0,
+        "bleedChancePercent": 30,
+        "intoxicationChancePercent": 0,
+        "lightColor": [
+          0.45,
+          0.25,
+          0.8
+        ],
+        "lightIntensity": 2,
+        "flicker": 0.8,
+        "humPitch": 35
+      }
+    },
+    {
+      "key": "fruit_punch",
+      "weight": 2,
+      "family": "chemical",
+      "radius": [
+        1.5,
+        2.2
+      ],
+      "effect": {
+        "damageType": "Poison",
+        "damagePerSecond": 4,
+        "burstDamage": 0,
+        "burstInterval": 3,
+        "bodyParts": [
+          "LeftLeg",
+          "RightLeg"
+        ],
+        "stunSeconds": 0,
+        "contusionSeconds": 0,
+        "fractureChancePercent": 0,
+        "bleedChancePercent": 0,
+        "intoxicationChancePercent": 35,
+        "lightColor": [
+          0.4,
+          1,
+          0.2
+        ],
+        "lightIntensity": 2,
+        "flicker": 1.5,
+        "humPitch": 70
+      }
+    },
+    {
+      "key": "radiation",
+      "weight": 2,
+      "family": "",
+      "radius": [
+        6.0,
+        10.0
+      ],
+      "effect": {
+        "damageType": "RadExposure",
+        "damagePerSecond": 1.2,
+        "burstDamage": 0,
+        "burstInterval": 3,
+        "bodyParts": [
+          "Chest",
+          "Stomach",
+          "Head"
+        ],
+        "stunSeconds": 0,
+        "contusionSeconds": 0,
+        "fractureChancePercent": 0,
+        "bleedChancePercent": 0,
+        "intoxicationChancePercent": 0,
+        "lightColor": [
+          0,
+          0,
+          0
+        ],
+        "lightIntensity": 0,
+        "flicker": 0,
+        "humPitch": 0
+      }
+    }
+  ]
+}
