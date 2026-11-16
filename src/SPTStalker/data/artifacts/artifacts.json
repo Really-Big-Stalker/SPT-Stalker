@@ -1,0 +1,310 @@
+{
+  "rarityWeights": {
+    "common": 100,
+    "uncommon": 35,
+    "rare": 10,
+    "legendary": 1
+  },
+  "spawns": {
+    "enabled": true,
+    "maps": [],
+    "containers": {
+      "5d6d2bb386f774785b07a77a": 3.0,
+      "5d6d2b5486f774785c2ba8ea": 2.5,
+      "5909e4b686f7747f5b744fa4": 1.0,
+      "578f87a3245977356274f2cb": 0.6,
+      "5909d36d86f774660f0bb900": 0.4,
+      "5909d5ef86f77467974efbd8": 0.5
+    }
+  },
+  "artifacts": [
+    {
+      "key": "jellyfish",
+      "id": "6afa9f9cdf8eccc79c029d2d",
+      "rarity": "common",
+      "tier": 1,
+      "anomaly": "gravitational",
+      "priceRoubles": 28000,
+      "placeholderTpl": "5df8a72c86f77412640e2e83",
+      "prefabPath": "",
+      "backgroundColor": "violet",
+      "weightKg": 0.4,
+      "locales": {
+        "en": {
+          "name": "Jellyfish",
+          "shortName": "Jelly",
+          "description": "A soft, translucent clump that forms where gravitational anomalies have folded on themselves. Slightly warm to the touch and always a little lighter than it should be. Common near Vortex fields."
+        },
+        "ru": {
+          "name": "Медуза",
+          "shortName": "Медуза",
+          "description": "A soft, translucent clump that forms where gravitational anomalies have folded on themselves. Slightly warm to the touch and always a little lighter than it should be. Common near Vortex fields."
+        }
+      }
+    },
+    {
+      "key": "stone_blood",
+      "id": "6afa9f9cf2962019ac6564de",
+      "rarity": "common",
+      "tier": 1,
+      "anomaly": "chemical",
+      "priceRoubles": 32000,
+      "placeholderTpl": "5df8a6a186f77412640e2e80",
+      "prefabPath": "",
+      "backgroundColor": "red",
+      "weightKg": 0.6,
+      "locales": {
+        "en": {
+          "name": "Stone Blood",
+          "shortName": "S.Blood",
+          "description": "A dense reddish-brown lump of fused soil, leaves and something that might once have been bone. Born in chemical anomalies; scientists pay well for samples."
+        },
+        "ru": {
+          "name": "Каменная кровь",
+          "shortName": "К.Кровь",
+          "description": "A dense reddish-brown lump of fused soil, leaves and something that might once have been bone. Born in chemical anomalies; scientists pay well for samples."
+        }
+      }
+    },
+    {
+      "key": "sparkler",
+      "id": "6afa9f9ccff43ad98cac72db",
+      "rarity": "common",
+      "tier": 1,
+      "anomaly": "electro",
+      "priceRoubles": 30000,
+      "placeholderTpl": "590a3c0a86f774385a33c450",
+      "prefabPath": "",
+      "backgroundColor": "yellow",
+      "weightKg": 0.3,
+      "locales": {
+        "en": {
+          "name": "Sparkler",
+          "shortName": "Sparkler",
+          "description": "A tangle of metallic filaments that crackles with static. Found near Electro anomalies after a discharge. Don't keep it next to your radio."
+        },
+        "ru": {
+          "name": "Бенгальский огонь",
+          "shortName": "Бенг.",
+          "description": "A tangle of metallic filaments that crackles with static. Found near Electro anomalies after a discharge. Don't keep it next to your radio."
+        }
+      }
+    },
+    {
+      "key": "slime",
+      "id": "6afa9f9c4c2777b04a6fe5ac",
+      "rarity": "common",
+      "tier": 1,
+      "anomaly": "chemical",
+      "priceRoubles": 26000,
+      "placeholderTpl": "67586af7036d7f3da60c3612",
+      "prefabPath": "",
+      "backgroundColor": "green",
+      "weightKg": 0.7,
+      "locales": {
+        "en": {
+          "name": "Slime",
+          "shortName": "Slime",
+          "description": "A quivering greenish mass that never quite settles. Thrown off by acidic Fruit Punch pools. Seals well in a glass jar - mostly."
+        },
+        "ru": {
+          "name": "Слизь",
+          "shortName": "Слизь",
+          "description": "A quivering greenish mass that never quite settles. Thrown off by acidic Fruit Punch pools. Seals well in a glass jar - mostly."
+        }
+      }
+    },
+    {
+      "key": "moonlight",
+      "id": "6afa9f9c26a6d0bd5492cefc",
+      "rarity": "uncommon",
+      "tier": 2,
+      "anomaly": "electro",
+      "priceRoubles": 68000,
+      "placeholderTpl": "5df8a77486f77412672a1e3f",
+      "prefabPath": "",
+      "backgroundColor": "blue",
+      "weightKg": 0.4,
+      "locales": {
+        "en": {
+          "name": "Moonlight",
+          "shortName": "Moonl.",
+          "description": "A perfectly round sphere that glows with a pale, steady light in the dark. Forms in Electro anomalies. Psy-researchers believe it dampens the effect of psi-emissions."
+        },
+        "ru": {
+          "name": "Лунный свет",
+          "shortName": "Л.свет",
+          "description": "A perfectly round sphere that glows with a pale, steady light in the dark. Forms in Electro anomalies. Psy-researchers believe it dampens the effect of psi-emissions."
+        }
+      }
+    },
+    {
+      "key": "flash",
+      "id": "6afa9f9c0ecf2d34780a8c9b",
+      "rarity": "uncommon",
+      "tier": 2,
+      "anomaly": "electro",
+      "priceRoubles": 62000,
+      "placeholderTpl": "5d1b392c86f77425243e98fe",
+      "prefabPath": "",
+      "backgroundColor": "yellow",
+      "weightKg": 0.3,
+      "locales": {
+        "en": {
+          "name": "Flash",
+          "shortName": "Flash",
+          "description": "Lightning caught in glass. Every few seconds it flickers as if something inside is trying to get out. Highly prized by electronics smugglers."
+        },
+        "ru": {
+          "name": "Вспышка",
+          "shortName": "Вспышка",
+          "description": "Lightning caught in glass. Every few seconds it flickers as if something inside is trying to get out. Highly prized by electronics smugglers."
+        }
+      }
+    },
+    {
+      "key": "thorn",
+      "id": "6afa9f9c9cdb1da5bce730f0",
+      "rarity": "uncommon",
+      "tier": 2,
+      "anomaly": "bio",
+      "priceRoubles": 55000,
+      "placeholderTpl": "57347c77245977448d35f6e2",
+      "prefabPath": "",
+      "backgroundColor": "orange",
+      "weightKg": 0.5,
+      "locales": {
+        "en": {
+          "name": "Thorn",
+          "shortName": "Thorn",
+          "description": "A cluster of hard, needle-like spines grown around a seed of unknown origin. It draws blood from anyone who handles it carelessly - and seems to like it."
+        },
+        "ru": {
+          "name": "Колючка",
+          "shortName": "Колючка",
+          "description": "A cluster of hard, needle-like spines grown around a seed of unknown origin. It draws blood from anyone who handles it carelessly - and seems to like it."
+        }
+      }
+    },
+    {
+      "key": "fireball",
+      "id": "6afa9f9c12fe7faf55eefc19",
+      "rarity": "uncommon",
+      "tier": 2,
+      "anomaly": "thermal",
+      "priceRoubles": 75000,
+      "placeholderTpl": "62a09cfe4f842e1bd12da3e4",
+      "prefabPath": "",
+      "backgroundColor": "orange",
+      "weightKg": 0.6,
+      "locales": {
+        "en": {
+          "name": "Fireball",
+          "shortName": "Fireb.",
+          "description": "A heavy, egg-shaped stone that stays hot no matter how long it's been out of the Burner. Stalkers carry them through winter to keep their hands working."
+        },
+        "ru": {
+          "name": "Огненный шар",
+          "shortName": "Огн.шар",
+          "description": "A heavy, egg-shaped stone that stays hot no matter how long it's been out of the Burner. Stalkers carry them through winter to keep their hands working."
+        }
+      }
+    },
+    {
+      "key": "night_star",
+      "id": "6afa9f9c3dc8b6ccbefedde4",
+      "rarity": "rare",
+      "tier": 3,
+      "anomaly": "gravitational",
+      "priceRoubles": 140000,
+      "placeholderTpl": "590a3d9c86f774385926e510",
+      "prefabPath": "",
+      "backgroundColor": "blue",
+      "weightKg": 0.5,
+      "locales": {
+        "en": {
+          "name": "Night Star",
+          "shortName": "N.Star",
+          "description": "A gravitational artifact that glows faintly in rhythmic pulses, like a slow heartbeat. Makes everything you carry feel lighter. Only forms deep inside Springboard fields."
+        },
+        "ru": {
+          "name": "Ночная звезда",
+          "shortName": "Н.звезда",
+          "description": "A gravitational artifact that glows faintly in rhythmic pulses, like a slow heartbeat. Makes everything you carry feel lighter. Only forms deep inside Springboard fields."
+        }
+      }
+    },
+    {
+      "key": "battery",
+      "id": "6afa9f9c59ab9abc35fbe62e",
+      "rarity": "rare",
+      "tier": 3,
+      "anomaly": "electro",
+      "priceRoubles": 125000,
+      "placeholderTpl": "5e2aee0a86f774755a234b62",
+      "prefabPath": "",
+      "backgroundColor": "yellow",
+      "weightKg": 0.8,
+      "locales": {
+        "en": {
+          "name": "Battery",
+          "shortName": "Battery",
+          "description": "Holds a charge that never seems to run out. Connect it to anything and it works - for a while. Ecologists want it badly; so does everyone else."
+        },
+        "ru": {
+          "name": "Батарейка",
+          "shortName": "Батар.",
+          "description": "Holds a charge that never seems to run out. Connect it to anything and it works - for a while. Ecologists want it badly; so does everyone else."
+        }
+      }
+    },
+    {
+      "key": "soul",
+      "id": "6afa9f9c7187808b46e101d5",
+      "rarity": "rare",
+      "tier": 3,
+      "anomaly": "bio",
+      "priceRoubles": 160000,
+      "placeholderTpl": "59e3658a86f7741776641ac4",
+      "prefabPath": "",
+      "backgroundColor": "violet",
+      "weightKg": 0.4,
+      "locales": {
+        "en": {
+          "name": "Soul",
+          "shortName": "Soul",
+          "description": "An organic artifact shaped like a twisted, glowing flower. Wounds close faster near it. Nobody knows where it comes from, and those who find them rarely talk about it."
+        },
+        "ru": {
+          "name": "Душа",
+          "shortName": "Душа",
+          "description": "An organic artifact shaped like a twisted, glowing flower. Wounds close faster near it. Nobody knows where it comes from, and those who find them rarely talk about it."
+        }
+      }
+    },
+    {
+      "key": "compass",
+      "id": "6afa9f9c62a697b482672037",
+      "rarity": "legendary",
+      "tier": 4,
+      "anomaly": "gravitational",
+      "priceRoubles": 420000,
+      "placeholderTpl": "679b9d55708cfcb2060b9ae3",
+      "prefabPath": "",
+      "backgroundColor": "black",
+      "weightKg": 0.6,
+      "locales": {
+        "en": {
+          "name": "Compass",
+          "shortName": "Compass",
+          "description": "A legend among stalkers. It is said to point to safe paths through any anomaly field - and that it was what let the first stalkers reach the Center. The Bunker has been looking for one for years."
+        },
+        "ru": {
+          "name": "Компас",
+          "shortName": "Компас",
+          "description": "A legend among stalkers. It is said to point to safe paths through any anomaly field - and that it was what let the first stalkers reach the Center. The Bunker has been looking for one for years."
+        }
+      }
+    }
+  ]
+}

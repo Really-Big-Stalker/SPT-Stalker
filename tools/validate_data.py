@@ -59,7 +59,52 @@ if assort:
             if not HEX24.match(b.get("tpl", "")) or b.get("count", 0) <= 0:
                 errors.append(f"{where}: bad barter entry {b}")
 
+# ---------- artifacts ----------
+arts = load(ROOT / "artifacts" / "artifacts.json")
+if arts:
+    seen_keys, seen_ids = set(), set()
+    for a in arts.get("artifacts", []):
+        where = f"artifacts.json ({a.get('key')})"
+        if not a.get("key") or a["key"] in seen_keys:
+            errors.append(f"{where}: missing or duplicate key")
+        seen_keys.add(a.get("key"))
+        if not HEX24.match(a.get("id", "")) or a["id"] in seen_ids:
+            errors.append(f"{where}: id must be a unique 24 character hex id")
+        seen_ids.add(a.get("id"))
+        if not HEX24.match(a.get("placeholderTpl", "")):
+            errors.append(f"{where}: placeholderTpl must be a 24 character hex id")
+        if a.get("rarity") not in arts.get("rarityWeights", {}):
+            errors.append(f"{where}: rarity '{a.get('rarity')}' has no entry in rarityWeights")
+        if not 1 <= a.get("tier", 0) <= 4:
+            errors.append(f"{where}: tier must be 1-4")
+        if not a.get("locales"):
+            errors.append(f"{where}: needs at least one locale")
+    for c, pct in arts.get("spawns", {}).get("containers", {}).items():
+        if not HEX24.match(c) or not 0 <= pct < 90:
+            errors.append(f"artifacts.json spawns: bad container entry {c}: {pct}")
+
+# ---------- contracts ----------
+con = load(ROOT / "contracts" / "contracts.json")
+if con:
+    mod_types = {"daytime", "bodyPart", "distance", "caliber", "weaponClass", "wearing", "survive"}
+    mod_keys = {m.get("key") for m in con.get("modifiers", [])}
+    for m in con.get("modifiers", []):
+        if m.get("type") not in mod_types:
+            errors.append(f"contracts.json modifier {m.get('key')}: unknown type {m.get('type')}")
+        for x in m.get("excludes", []):
+            if x not in mod_keys:
+                errors.append(f"contracts.json modifier {m.get('key')}: excludes unknown modifier {x}")
+    for f in con.get("factions", []):
+        if not f.get("texts"):
+            errors.append(f"contracts.json faction {f.get('key')}: needs at least one text")
+        for x in f.get("blockedModifiers", []):
+            if x not in mod_keys:
+                errors.append(f"contracts.json faction {f.get('key')}: blocks unknown modifier {x}")
+    for group, rng in {**con.get("hunts", {}).get("kills", {}), **con.get("artifactHunts", {}).get("count", {})}.items():
+        if len(rng) != 2 or rng[0] < 1 or rng[0] > rng[1]:
+            errors.append(f"contracts.json: bad [min, max] range for {group}: {rng}")
+
 if errors:
     print("\n".join(errors))
     sys.exit(1)
-print(f"OK: {len(assort['offers'])} offers, trader {base['_id']}")
+print(f"OK: {len(assort['offers'])} offers, {len(arts['artifacts'])} artifacts, {len(con['factions'])} factions, {len(con['modifiers'])} modifiers")

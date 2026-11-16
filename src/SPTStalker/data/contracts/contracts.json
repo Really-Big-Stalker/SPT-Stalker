@@ -1,0 +1,372 @@
+{
+  "enabled": true,
+  "traderWeight": {
+    "Daily": 2,
+    "Weekly": 2
+  },
+  "rewardBaseWhitelist": [
+    "543be5664bdc2dd4348b4569",
+    "5485a8684bdc2da71d8b4567",
+    "5448e8d04bdc2ddf718b4569",
+    "5448e8d64bdc2dce718b4568",
+    "590c745b86f7743cc433c5f2",
+    "57864a66245977548f04a81f"
+  ],
+  "rewardCanBeWeapon": true,
+  "weaponRewardChancePercent": 15,
+  "hunts": {
+    "kills": {
+      "Daily": [
+        4,
+        8
+      ],
+      "Weekly": [
+        15,
+        25
+      ]
+    },
+    "maxModifiers": {
+      "Daily": 1,
+      "Weekly": 2
+    },
+    "mapLockChancePercent": 50
+  },
+  "factions": [
+    {
+      "key": "bandits",
+      "minLevel": 1,
+      "weight": 4,
+      "target": "Savage",
+      "savageRoles": [
+        "assault"
+      ],
+      "maps": [
+        "any",
+        "bigmap",
+        "Woods",
+        "Shoreline",
+        "Interchange",
+        "TarkovStreets",
+        "Sandbox",
+        "Lighthouse",
+        "RezervBase"
+      ],
+      "killMultiplier": 1,
+      "difficulty": 0.1,
+      "blockedModifiers": [],
+      "texts": [
+        {
+          "name": "Bandit Trouble",
+          "description": "Listen here, stalker. Some punks in track suits have been robbing rookies on the way to my bunker. Bad for business. Go and teach them some manners - permanently.",
+          "success": "Well, well. The road's quieter already. Here's your cut.",
+          "fail": "Couldn't handle a few thugs? Maybe the Zone isn't for you."
+        },
+        {
+          "name": "Thinning the Herd",
+          "description": "Bandits are like rats: kill one and three more crawl out. Still, every one you put down is one less knife in a rookie's back. Get to it.",
+          "success": "Good work. The rookies will sleep better tonight. So will I.",
+          "fail": "The bandits are laughing at both of us now."
+        },
+        {
+          "name": "Debt Collection",
+          "description": "One of the bandit gangs owes me for a crate of vodka they \"forgot\" to pay for. I don't care which ones you shoot - the message will get through.",
+          "success": "Message received, I'd say. Pleasure doing business.",
+          "fail": "No message, no money. Simple as that."
+        }
+      ]
+    },
+    {
+      "key": "mercenaries",
+      "minLevel": 5,
+      "weight": 2,
+      "target": "AnyPmc",
+      "savageRoles": [],
+      "maps": [
+        "any",
+        "bigmap",
+        "Woods",
+        "Shoreline",
+        "Interchange",
+        "TarkovStreets",
+        "Sandbox",
+        "Lighthouse",
+        "RezervBase",
+        "laboratory"
+      ],
+      "killMultiplier": 0.5,
+      "difficulty": 0.5,
+      "blockedModifiers": [],
+      "texts": [
+        {
+          "name": "Hired Guns",
+          "description": "Mercenaries. Good gear, no loyalty, and they're cutting into my artifact trade. Somebody with deep pockets wants them gone, and that somebody pays through me.",
+          "success": "Professional work. My client is pleased, and so am I.",
+          "fail": "The mercs are still out there. My client is not happy."
+        },
+        {
+          "name": "Competition",
+          "description": "Foreign operators have been sweeping the area and taking what's mine. I want them to understand this territory has an owner.",
+          "success": "Now they understand. Here, you earned it.",
+          "fail": "Seems they understood nothing. Pity."
+        }
+      ]
+    },
+    {
+      "key": "military",
+      "minLevel": 15,
+      "weight": 1,
+      "target": "Savage",
+      "savageRoles": [
+        "pmcBot"
+      ],
+      "maps": [
+        "RezervBase",
+        "laboratory"
+      ],
+      "killMultiplier": 0.6,
+      "difficulty": 0.6,
+      "blockedModifiers": [],
+      "texts": [
+        {
+          "name": "Military Sweep",
+          "description": "The military are running a sweep and shooting anyone who isn't wearing their patch. Hit them where they're holed up. Carefully - these aren't bandits.",
+          "success": "The sweep's been called off. Funny how that works.",
+          "fail": "The soldiers are still out there. Keep your head down."
+        },
+        {
+          "name": "Checkpoint Breaker",
+          "description": "A squad of spetsnaz has set up shop and is choking my supply routes. Make them reconsider their posting.",
+          "success": "Supply routes are open again. Good.",
+          "fail": "No supplies, no stock. You're not helping either of us."
+        }
+      ]
+    },
+    {
+      "key": "renegades",
+      "minLevel": 20,
+      "weight": 1,
+      "target": "Savage",
+      "savageRoles": [
+        "exUsec"
+      ],
+      "maps": [
+        "Lighthouse"
+      ],
+      "killMultiplier": 0.6,
+      "difficulty": 0.7,
+      "blockedModifiers": [],
+      "texts": [
+        {
+          "name": "Renegades",
+          "description": "A group of deserters has dug in with heavy weapons and decided they're a faction now. Remind them what happens to people who forget who runs this area.",
+          "success": "Renegades, mercenaries - all the same once they're dead. Good job.",
+          "fail": "They're still dug in. Maybe bring a bigger gun next time."
+        }
+      ]
+    },
+    {
+      "key": "monolith",
+      "minLevel": 20,
+      "weight": 1,
+      "target": "Savage",
+      "savageRoles": [
+        "sectantPriest",
+        "sectantWarrior"
+      ],
+      "maps": [
+        "bigmap",
+        "Woods",
+        "Shoreline",
+        "factory4_day"
+      ],
+      "killMultiplier": 0.3,
+      "difficulty": 0.8,
+      "blockedModifiers": [
+        "night"
+      ],
+      "texts": [
+        {
+          "name": "Children of the Monolith",
+          "description": "Robed fanatics are coming out at night, chanting about a stone that grants wishes. Whatever they are, they kill stalkers. Find them in the dark and end their prayers.",
+          "success": "So they do bleed. Here. And don't tell anyone what you saw.",
+          "fail": "The chanting hasn't stopped. I can hear it some nights from the bunker..."
+        },
+        {
+          "name": "Faith and Bullets",
+          "description": "The Monolith zealots took a scout of mine. I don't expect him back. I do expect payback.",
+          "success": "That's for my scout. Take this, you've earned it.",
+          "fail": "Nothing? Then my scout died for nothing."
+        }
+      ]
+    }
+  ],
+  "modifiers": [
+    {
+      "key": "night",
+      "type": "daytime",
+      "from": 21,
+      "to": 5,
+      "chancePercent": 18,
+      "difficulty": 0.25,
+      "minLevel": 1,
+      "excludes": []
+    },
+    {
+      "key": "survive",
+      "type": "survive",
+      "chancePercent": 25,
+      "difficulty": 0.15,
+      "minLevel": 1,
+      "excludes": []
+    },
+    {
+      "key": "gas_mask",
+      "type": "wearing",
+      "equipmentAnyOf": [
+        "5b432c305acfc40019478128",
+        "60363c0c92ec1c31037959f5"
+      ],
+      "chancePercent": 15,
+      "difficulty": 0.25,
+      "minLevel": 5,
+      "excludes": []
+    },
+    {
+      "key": "close_range",
+      "type": "distance",
+      "compareMethod": "<=",
+      "value": 25,
+      "chancePercent": 12,
+      "difficulty": 0.2,
+      "minLevel": 1,
+      "excludes": [
+        "long_range"
+      ]
+    },
+    {
+      "key": "long_range",
+      "type": "distance",
+      "compareMethod": ">=",
+      "value": 75,
+      "chancePercent": 10,
+      "difficulty": 0.3,
+      "minLevel": 10,
+      "excludes": [
+        "close_range",
+        "shotguns",
+        "pistols"
+      ]
+    },
+    {
+      "key": "headshots",
+      "type": "bodyPart",
+      "bodyParts": [
+        "Head"
+      ],
+      "chancePercent": 8,
+      "difficulty": 0.4,
+      "minLevel": 12,
+      "excludes": []
+    },
+    {
+      "key": "shotguns",
+      "type": "weaponClass",
+      "weaponBaseClasses": [
+        "5447b6094bdc2dc3278b4567"
+      ],
+      "chancePercent": 12,
+      "difficulty": 0.2,
+      "minLevel": 1,
+      "excludes": [
+        "long_range",
+        "pistols",
+        "caliber_545"
+      ]
+    },
+    {
+      "key": "pistols",
+      "type": "weaponClass",
+      "weaponBaseClasses": [
+        "5447b5cf4bdc2d65278b4567",
+        "617f1ef5e8b54b0998387733"
+      ],
+      "chancePercent": 6,
+      "difficulty": 0.35,
+      "minLevel": 5,
+      "excludes": [
+        "long_range",
+        "shotguns",
+        "caliber_545"
+      ]
+    },
+    {
+      "key": "caliber_545",
+      "type": "caliber",
+      "calibers": [
+        "Caliber545x39"
+      ],
+      "chancePercent": 8,
+      "difficulty": 0.1,
+      "minLevel": 1,
+      "excludes": [
+        "shotguns",
+        "pistols"
+      ]
+    }
+  ],
+  "artifactHunts": {
+    "enabled": true,
+    "count": {
+      "Daily": [
+        1,
+        2
+      ],
+      "Weekly": [
+        3,
+        6
+      ]
+    },
+    "maxTypes": {
+      "Daily": 1,
+      "Weekly": 3
+    },
+    "tierByLevel": [
+      [
+        1,
+        1
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        22,
+        3
+      ],
+      [
+        35,
+        4
+      ]
+    ],
+    "texts": [
+      {
+        "name": "Zone Samples",
+        "description": "A scientist friend of mine is paying top roubles for fresh samples. Anomalies throw artifacts into stashes and caches all over the place - go dig some up. Found in the Zone, mind you; I can tell when you've bought it off some flea-market crook.",
+        "success": "Fine specimens. The egghead will be thrilled.",
+        "fail": "No samples, no money. The scientist will find another supplier."
+      },
+      {
+        "name": "A Special Order",
+        "description": "I've got a buyer from the Big Land who wants a very particular set of artifacts. Bring them to me untouched - straight out of the Zone.",
+        "success": "That's exactly what the client wanted. Here's your share.",
+        "fail": "The client walked. That's money out of both our pockets."
+      },
+      {
+        "name": "After the Blowout",
+        "description": "The last emission stirred up the anomalies something fierce. Fresh artifacts will be turning up in caches and corpses. Bring me what I need before the vultures get it.",
+        "success": "You beat the vultures to it. Good stalker.",
+        "fail": "The vultures got there first. Shame."
+      }
+    ]
+  }
+}
