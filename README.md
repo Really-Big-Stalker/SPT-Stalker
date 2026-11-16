@@ -11,7 +11,7 @@ A S.T.A.L.K.E.R.-inspired overhaul for **Single Player Tarkov 4.1.x** (server mo
 | 3 | **Artifacts**: 12 items in 4 tiers that spawn in stashes; 3D models | ✅ items, models Unity-ready, ⏳ bundles (built in the EFT SDK) |
 | 4 | Custom story quest line for the trader | planned |
 | 5 | New AI enemies (Zone factions) | planned (contracts use existing bots until then) |
-| 6 | **Anomalies**: new fields every raid, 6 types, detector, artifacts inside | ✅ server + client plugin (first version, see [docs/ANOMALIES.md](docs/ANOMALIES.md)) |
+| 6 | **Anomalies**: new fields every raid, 6 types, detector, artifacts inside, **radiation + gas masks** | ✅ server + client plugin (first version, see [docs/ANOMALIES.md](docs/ANOMALIES.md)) |
 
 ## Stage 1: the Zone trader
 

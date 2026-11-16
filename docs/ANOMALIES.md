@@ -33,6 +33,47 @@ raid starts ─► server (SPTStalker.dll)                          client (BepI
 Every number is editable: damage, intervals, body parts, effect chances, radius, light colour/intensity/flicker, hum
 pitch. The family links a type to artifacts with the same `"anomaly"` in `artifacts.json` (rarer tiers are less likely).
 
+## Radiation and gas masks
+
+You now carry a **radiation dose** through each raid, shown in the health screen's **radiation meter** (`dose / 100`).
+The meter is in the game's UI, but EFT never feeds it a value; the plugin does.
+
+**Where it comes from**
+
+| Source | Dose / second | Gas mask helps? |
+|---|---|---|
+| Radiation hotspot (inside / around it) | 2.5 / up to 0.6 | partly (`maskProtection` 0.6) |
+| Vortex (inside / around) | 0.8 / up to 0.15 | no |
+| Fruit Punch (inside / around) | 0.5 / up to 0.1 | **mostly** (0.85), and it also cuts the acid damage and intoxication |
+| Burner, springboard, electro (inside) | 0.2–0.3 | burner a little (smoke) |
+| **Carried artifacts** | tier 1→4: 0.02 / 0.04 / 0.08 / 0.15 each | no. Keep them in your **secure container**, which counts as shielded |
+
+"Around it" fades out to 3x the anomaly's radius (2x for hotspots), so you pick up dose just by walking through a field.
+
+**Gas masks** (worn in the face-cover slot): **GP-7 90%**, **GP-5 80%**, Pestily plague mask 50%, respirator 35%.
+A mask's protection is multiplied by each anomaly type's `maskProtection`. For example, a GP-5 in a Fruit Punch field blocks
+80% x 85% = 68% of the acid damage over time, the radiation and the chance of intoxication. Physical hits (springboard
+slams, electro discharges) are never blocked.
+
+**Getting rid of it**: the body clears 0.01 / s by itself. **Vodka -30**, **moonshine -40**, whiskey -20, bad vodka -15.
+
+**What it does** (`stages`)
+
+| Dose | Stage | Effect |
+|---|---|---|
+| 25 | Irradiated | 0.05 radiation damage / s |
+| 50 | Radiation sickness | 0.15 / s + dizzy spells (contusion) every ~90 s |
+| 75 | Severe | 0.4 / s + dizzy spells every ~40 s |
+| 95 | Lethal dose | 1.5 / s + dizzy spells every ~20 s |
+
+Each stage can also start the game's own "radiation exposure" status effect (`gameRadiationEffect`). It's off by
+default because how long that effect lasts hasn't been tested yet.
+
+A **Geiger counter** clicks faster the more radiation is around you, including from what you carry. Its volume is in
+the BepInEx config (F1 → Radiation).
+
+The dose resets at the start of every raid (for now).
+
 ## Per-map settings
 
 `maps` holds, per map id (`bigmap`, `woods`, `shoreline`, `lighthouse`, `interchange`, `rezervbase`, `tarkovstreets`,
@@ -76,3 +117,5 @@ When you first test, check:
 * Throwable bolts that trigger anomalies, like in the games
 * Custom visual effects (distortion, particles) once there are asset bundles for them
 * Emissions (blowouts) that reshuffle anomalies mid-raid
+* Keep the radiation dose between raids (saved on the server)
+* Gas mask filters that wear out, and a lead container item for artifacts
