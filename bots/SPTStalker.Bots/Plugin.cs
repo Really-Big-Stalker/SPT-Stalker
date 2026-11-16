@@ -17,6 +17,7 @@ namespace SPTStalker.Bots
     [BepInPlugin("com.sptstalker.bots", "SPT-Stalker Bots", "0.1.0")]
     [BepInDependency("xyz.drakia.bigbrain", "1.5.0")]
     [BepInDependency("xyz.drakia.waypoints", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("me.sol.sain", BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log;
@@ -28,6 +29,7 @@ namespace SPTStalker.Bots
         internal static ConfigEntry<float> CalmDownSeconds;
         internal static ConfigEntry<float> AnomalyPreference;
         internal static ConfigEntry<bool> DebugLog;
+        internal static ConfigEntry<int> LayerPriority;
 
         /// <summary>Role the server mod gives the stalkers (data/bots/stalkers.json "role").</summary>
         internal const WildSpawnType StalkerRole = WildSpawnType.arenaFighterEvent;
@@ -51,14 +53,18 @@ namespace SPTStalker.Bots
             MoveSpeed = Config.Bind(section, "Walking speed", 0.6f, new ConfigDescription("0 = slow walk, 1 = full walk speed.", new AcceptableValueRange<float>(0.1f, 1f), new ConfigurationManagerAttributes { Order = 60 }));
             CalmDownSeconds = Config.Bind(section, "Calm down after fight (s)", 30f, new ConfigDescription("Seconds without enemies before they go back to roaming.", new AcceptableValueRange<float>(0f, 300f), new ConfigurationManagerAttributes { Order = 50 }));
             DebugLog = Config.Bind(section, "Debug log", false, new ConfigDescription("Log what each stalker group is doing.", null, new ConfigurationManagerAttributes { Order = 10, IsAdvanced = true }));
+            LayerPriority = Config.Bind(section, "Roam layer priority (restart)", 19, new ConfigDescription(
+                "BigBrain priority of the roam layer. Keep it below SAIN's combat layers (20+) and above the game's idle layers. Needs a game restart.",
+                new AcceptableValueRange<int>(1, 99), new ConfigurationManagerAttributes { Order = 5, IsAdvanced = true }));
 
-            BrainManager.AddCustomLayer(typeof(StalkerRoamLayer), BrainNames, 19, new List<WildSpawnType> { StalkerRole });
+            BrainManager.AddCustomLayer(typeof(StalkerRoamLayer), BrainNames, LayerPriority.Value, new List<WildSpawnType> { StalkerRole });
 
             var host = new GameObject("SPTStalker.Bots.Diagnostics");
             DontDestroyOnLoad(host);
             host.AddComponent<StalkerDiagnostics>();
 
-            Log.LogInfo($"SPT-Stalker Bots loaded (Waypoints {(Chainloader().ContainsKey("xyz.drakia.waypoints") ? "found" : "not installed - recommended")})");
+            Log.LogInfo($"SPT-Stalker Bots loaded (Waypoints {(Chainloader().ContainsKey("xyz.drakia.waypoints") ? "found" : "not installed - recommended")}, " +
+                        $"SAIN {(Chainloader().ContainsKey("me.sol.sain") ? "found" : "not installed")})");
         }
 
         private static Dictionary<string, PluginInfo> Chainloader() => BepInEx.Bootstrap.Chainloader.PluginInfos;

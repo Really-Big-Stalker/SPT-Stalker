@@ -16,6 +16,7 @@ namespace SPTStalker.Bots
 
         private void Update()
         {
+            SainInterop.Init();
             if (Time.time < _next)
             {
                 return;
@@ -43,7 +44,10 @@ namespace SPTStalker.Bots
 
                 var brain = bot.Brain?.BaseBrain?.ShortName() ?? "?";
                 var leader = bot.Boss != null && bot.Boss.IamBoss ? "leader" : "follower";
-                Plugin.Log.LogInfo($"SPT-Stalker Bots: stalker {bot.Profile.Nickname} ({leader}), brain '{brain}', active layer '{BrainManager.GetActiveLayerName(bot)}'");
+                var sain = SainInterop.Installed
+                    ? (SainInterop.Controls(bot) ? $", SAIN personality '{SainInterop.Personality(bot)}'" : ", not controlled by SAIN")
+                    : "";
+                Plugin.Log.LogInfo($"SPT-Stalker Bots: stalker {bot.Profile.Nickname} ({leader}), brain '{brain}', active layer '{BrainManager.GetActiveLayerName(bot)}'{sain}");
             }
         }
     }

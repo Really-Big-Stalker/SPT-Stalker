@@ -66,6 +66,7 @@ namespace SPTStalker.Bots
             switch (_state)
             {
                 case State.Choosing:
+                    SainInterop.Init();
                     _target = RoamTargets.Pick(BotOwner.Position);
                     _state = State.Moving;
                     _repathAt = 0;

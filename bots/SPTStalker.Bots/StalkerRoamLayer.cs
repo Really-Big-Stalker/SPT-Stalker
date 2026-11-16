@@ -12,6 +12,8 @@ namespace SPTStalker.Bots
     internal class StalkerRoamLayer : CustomLayer
     {
         private float _lastDanger = -999f;
+        private float _nextSainCheck;
+        private bool _sainCalm = true;
 
         public StalkerRoamLayer(BotOwner botOwner, int priority) : base(botOwner, priority)
         {
@@ -34,7 +36,19 @@ namespace SPTStalker.Bots
                 return false;
             }
 
-            return Time.time - _lastDanger > Plugin.CalmDownSeconds.Value;
+            if (Time.time - _lastDanger <= Plugin.CalmDownSeconds.Value)
+            {
+                return false;
+            }
+
+            // With SAIN in charge of this stalker, also ask SAIN: it tracks heard/remembered enemies and searches
+            if (SainInterop.Installed && Time.time >= _nextSainCheck)
+            {
+                _nextSainCheck = Time.time + 0.5f;
+                _sainCalm = !SainInterop.Controls(BotOwner) || SainInterop.IsCalm(BotOwner, Plugin.CalmDownSeconds.Value);
+            }
+
+            return !SainInterop.Installed || _sainCalm;
         }
 
         public override Action GetNextAction() => new Action(typeof(StalkerRoamLogic), "Roaming");
@@ -43,7 +57,8 @@ namespace SPTStalker.Bots
 
         public override void BuildDebugText(StringBuilder stringBuilder)
         {
-            stringBuilder.AppendLine($"SPT-Stalker roam, calm for {Time.time - _lastDanger:0}s");
+            stringBuilder.AppendLine($"SPT-Stalker roam, calm for {Time.time - _lastDanger:0}s" +
+                                     (SainInterop.Installed ? $", SAIN {(SainInterop.Controls(BotOwner) ? SainInterop.Personality(BotOwner) : "not controlling")}" : ""));
         }
     }
 }
