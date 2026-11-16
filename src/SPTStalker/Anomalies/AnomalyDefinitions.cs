@@ -110,6 +110,8 @@ public record RadiationStage
     [JsonPropertyName("gameRadiationEffect")]
     public bool GameRadiationEffect { get; set; }
 }
+
+public record MapAnomalySettings
 {
     /// <summary>[min, max] anomaly fields per raid.</summary>
     [JsonPropertyName("fields")]
