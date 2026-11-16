@@ -96,7 +96,7 @@ namespace SPTStalker.Client
             _carried = 0;
             if (_artifactRadiation.Count > 0)
             {
-                foreach (var tpl in EftBridge.CarriedTemplateIds(player, _settings.shieldedSlots))
+                foreach (var tpl in EftBridge.CarriedTemplateIds(player, _settings.shieldedSlots, _settings.shieldedSubSlots))
                 {
                     if (tpl != null && _artifactRadiation.TryGetValue(tpl, out var rate))
                     {

@@ -25,6 +25,28 @@ public record AnomalyFile
 
     [JsonPropertyName("radiation")]
     public RadiationSettings Radiation { get; set; } = new();
+
+    [JsonPropertyName("armor")]
+    public ArmorSettings Armor { get; set; } = new();
+}
+
+/// <summary>How worn armour softens physical anomaly hits (springboard slams, electro discharges...).</summary>
+public record ArmorSettings
+{
+    /// <summary>Reduction per armour class (class 4 x 0.1 = 40%).</summary>
+    [JsonPropertyName("reductionPerClass")]
+    public float ReductionPerClass { get; set; } = 0.1f;
+
+    [JsonPropertyName("maxReduction")]
+    public float MaxReduction { get; set; } = 0.6f;
+
+    /// <summary>Slots whose highest armour class protects the body (plates and soft inserts inside count).</summary>
+    [JsonPropertyName("bodySlots")]
+    public List<string> BodySlots { get; set; } = ["ArmorVest", "TacticalVest"];
+
+    /// <summary>Slots whose highest armour class protects the head.</summary>
+    [JsonPropertyName("headSlots")]
+    public List<string> HeadSlots { get; set; } = ["Headwear"];
 }
 
 /// <summary>The player's radiation dose: how it builds up, what it does, and what protects against it.</summary>
@@ -48,6 +70,14 @@ public record RadiationSettings
     /// <summary>Equipment slots whose contents don't irradiate you (the secure container counts as lead-lined).</summary>
     [JsonPropertyName("shieldedSlots")]
     public List<string> ShieldedSlots { get; set; } = ["SecuredContainer"];
+
+    /// <summary>Sub-slots (inside other items) that are shielded too, e.g. the pockets' special slots.</summary>
+    [JsonPropertyName("shieldedSubSlots")]
+    public List<string> ShieldedSubSlots { get; set; } = ["SpecialSlot1", "SpecialSlot2", "SpecialSlot3"];
+
+    /// <summary>Allow artifacts to be put in the pockets' special slots.</summary>
+    [JsonPropertyName("artifactsFitSpecialSlots")]
+    public bool ArtifactsFitSpecialSlots { get; set; } = true;
 
     [JsonPropertyName("gasMasks")]
     public List<GasMaskDefinition> GasMasks { get; set; } = [];
@@ -228,6 +258,13 @@ public record AnomalyEffect
     /// </summary>
     [JsonPropertyName("maskProtection")]
     public float MaskProtection { get; set; }
+
+    /// <summary>
+    /// 0..1: how much of this anomaly's physical harm (bursts: damage, contusion, stun, fracture, bleeding)
+    /// armour can absorb. Multiplied by the armour's own reduction (see "armor" settings).
+    /// </summary>
+    [JsonPropertyName("armorProtection")]
+    public float ArmorProtection { get; set; }
 }
 
 // ------------------------------------------------------------- layout sent to the client
@@ -250,6 +287,22 @@ public record AnomalyLayout
     /// <summary>Artifact templates and how much radiation each gives off when carried.</summary>
     [JsonPropertyName("artifacts")]
     public List<ArtifactRadiationDto> Artifacts { get; set; } = [];
+
+    [JsonPropertyName("armor")]
+    public ArmorSettings Armor { get; set; } = new();
+
+    /// <summary>Armour class of every item that has one (vests, rigs, plates, inserts, helmets).</summary>
+    [JsonPropertyName("armorClasses")]
+    public List<ArmorClassDto> ArmorClasses { get; set; } = [];
+}
+
+public record ArmorClassDto
+{
+    [JsonPropertyName("tpl")]
+    public string Tpl { get; set; } = "";
+
+    [JsonPropertyName("armorClass")]
+    public int ArmorClass { get; set; }
 }
 
 public record ArtifactRadiationDto

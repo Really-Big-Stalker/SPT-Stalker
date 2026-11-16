@@ -13,6 +13,24 @@ namespace SPTStalker.Client
         public AnomalyTypeData[] types;
         public RadiationSettings radiation;
         public ArtifactRadiation[] artifacts;
+        public ArmorSettings armor;
+        public ArmorClass[] armorClasses;
+    }
+
+    [Serializable]
+    internal class ArmorSettings
+    {
+        public float reductionPerClass;
+        public float maxReduction;
+        public string[] bodySlots;
+        public string[] headSlots;
+    }
+
+    [Serializable]
+    internal class ArmorClass
+    {
+        public string tpl;
+        public int armorClass;
     }
 
     [Serializable]
@@ -23,6 +41,7 @@ namespace SPTStalker.Client
         public float decayPerSecond;
         public float[] artifactRadiationByTier;
         public string[] shieldedSlots;
+        public string[] shieldedSubSlots;
         public GasMask[] gasMasks;
         public RadiationCure[] cures;
         public RadiationStage[] stages;
@@ -106,6 +125,7 @@ namespace SPTStalker.Client
         public float auraRadiationPerSecond;
         public float auraRadiusMultiplier;
         public float maskProtection;
+        public float armorProtection;
     }
 #pragma warning restore 0649
 }

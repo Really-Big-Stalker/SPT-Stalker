@@ -240,7 +240,8 @@
         "radiationPerSecond": 0.3,
         "auraRadiationPerSecond": 0.0,
         "auraRadiusMultiplier": 3,
-        "maskProtection": 0.3
+        "maskProtection": 0.3,
+        "armorProtection": 0.0
       }
     },
     {
@@ -278,7 +279,8 @@
         "radiationPerSecond": 0.2,
         "auraRadiationPerSecond": 0.0,
         "auraRadiusMultiplier": 3,
-        "maskProtection": 0.0
+        "maskProtection": 0.0,
+        "armorProtection": 0.4
       }
     },
     {
@@ -314,7 +316,8 @@
         "radiationPerSecond": 0.3,
         "auraRadiationPerSecond": 0.05,
         "auraRadiusMultiplier": 3,
-        "maskProtection": 0.0
+        "maskProtection": 0.0,
+        "armorProtection": 0.9
       }
     },
     {
@@ -355,7 +358,8 @@
         "radiationPerSecond": 0.8,
         "auraRadiationPerSecond": 0.15,
         "auraRadiusMultiplier": 3,
-        "maskProtection": 0.0
+        "maskProtection": 0.0,
+        "armorProtection": 0.7
       }
     },
     {
@@ -391,7 +395,8 @@
         "radiationPerSecond": 0.5,
         "auraRadiationPerSecond": 0.1,
         "auraRadiusMultiplier": 3,
-        "maskProtection": 0.85
+        "maskProtection": 0.85,
+        "armorProtection": 0.0
       }
     },
     {
@@ -428,7 +433,8 @@
         "radiationPerSecond": 2.5,
         "auraRadiationPerSecond": 0.6,
         "auraRadiusMultiplier": 2,
-        "maskProtection": 0.6
+        "maskProtection": 0.6,
+        "armorProtection": 0.0
       }
     }
   ],
@@ -487,6 +493,11 @@
         "name": "Tarkovskaya vodka (bad)",
         "tpl": "614451b71e5874611e2c7ae5",
         "doseReduction": 15
+      },
+      {
+        "name": "Pevko Light beer",
+        "tpl": "62a09f32621468534a797acb",
+        "doseReduction": 10
       }
     ],
     "stages": [
@@ -537,6 +548,23 @@
         "sicknessEverySeconds": 20,
         "gameRadiationEffect": true
       }
+    ],
+    "shieldedSubSlots": [
+      "SpecialSlot1",
+      "SpecialSlot2",
+      "SpecialSlot3"
+    ],
+    "artifactsFitSpecialSlots": true
+  },
+  "armor": {
+    "reductionPerClass": 0.1,
+    "maxReduction": 0.6,
+    "bodySlots": [
+      "ArmorVest",
+      "TacticalVest"
+    ],
+    "headSlots": [
+      "Headwear"
     ]
   }
 }

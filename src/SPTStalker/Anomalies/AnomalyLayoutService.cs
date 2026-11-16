@@ -23,8 +23,13 @@ public class AnomalyLayoutService(
 {
     private readonly ConcurrentDictionary<MongoId, AnomalyLayout> _layouts = new();
     private AnomalyFile _config = new();
+    private List<ArmorClassDto> _armorClasses = [];
 
-    public void Configure(AnomalyFile config) => _config = config;
+    public void Configure(AnomalyFile config, List<ArmorClassDto> armorClasses)
+    {
+        _config = config;
+        _armorClasses = armorClasses;
+    }
 
     public AnomalyLayout GetLayout(MongoId sessionId) =>
         _layouts.TryGetValue(sessionId, out var layout) ? layout : new AnomalyLayout();
@@ -33,7 +38,14 @@ public class AnomalyLayoutService(
     public void GenerateForRaid(MongoId sessionId, string locationName, LocationBase raidLocation)
     {
         var mapKey = locationName.ToLowerInvariant();
-        var layout = new AnomalyLayout { Location = mapKey, Radiation = _config.Radiation, Artifacts = ArtifactRadiation() };
+        var layout = new AnomalyLayout
+        {
+            Location = mapKey,
+            Radiation = _config.Radiation,
+            Artifacts = ArtifactRadiation(),
+            Armor = _config.Armor,
+            ArmorClasses = _armorClasses
+        };
         _layouts[sessionId] = layout;
 
         if (!_config.Enabled || mapKey == "hideout")

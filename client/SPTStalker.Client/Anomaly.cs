@@ -80,7 +80,7 @@ namespace SPTStalker.Client
         /// (ambient, for the Geiger counter) and how much of it gets through the gas mask (intake).
         /// </summary>
         /// <param name="maskFactor">0..1 protection of the gas mask the player is wearing.</param>
-        public (float ambient, float intake) Tick(Vector3 playerPos, object health, float dt, float maskFactor)
+        public (float ambient, float intake) Tick(Vector3 playerPos, object health, float dt, float maskFactor, ArmorTracker armor)
         {
             Animate(dt);
 
@@ -108,7 +108,7 @@ namespace SPTStalker.Client
 
             if (inside && !_inside)
             {
-                OnEnter(playerPos, health, through);
+                OnEnter(playerPos, health, through, armor);
             }
 
             _inside = inside;
@@ -124,7 +124,7 @@ namespace SPTStalker.Client
                 _burstTimer -= dt;
                 if (_burstTimer <= 0)
                 {
-                    Burst(playerPos, health);
+                    Burst(playerPos, health, armor);
                 }
             }
 
@@ -144,12 +144,12 @@ namespace SPTStalker.Client
             return (ambient, ambient * through);
         }
 
-        private void OnEnter(Vector3 playerPos, object health, float through)
+        private void OnEnter(Vector3 playerPos, object health, float through, ArmorTracker armor)
         {
             _dotTimer = DamageTick;
             if (_effect.burstDamage > 0)
             {
-                Burst(playerPos, health);
+                Burst(playerPos, health, armor);
             }
 
             if (Chance(_effect.intoxicationChancePercent * through))
@@ -158,31 +158,35 @@ namespace SPTStalker.Client
             }
         }
 
-        private void Burst(Vector3 playerPos, object health)
+        private void Burst(Vector3 playerPos, object health, ArmorTracker armor)
         {
             _burstTimer = Mathf.Max(0.5f, _effect.burstInterval);
             _flash = 1f;
 
             var part = RandomPart();
+            // Armour absorbs part of the physical hit: damage, knock-out effects and injury chances
+            var absorbed = armor == null ? 0f : armor.For(part) * Mathf.Clamp01(_effect.armorProtection);
+            var left = 1f - absorbed;
+
             var dir = (playerPos - Position).normalized;
-            EftBridge.ApplyDamage(health, part, _effect.burstDamage * Plugin.DamageMultiplier.Value, _effect.damageType, playerPos, dir);
+            EftBridge.ApplyDamage(health, part, _effect.burstDamage * left * Plugin.DamageMultiplier.Value, _effect.damageType, playerPos, dir);
 
-            if (_effect.contusionSeconds > 0)
+            if (_effect.contusionSeconds * left > 0.3f)
             {
-                EftBridge.DoContusion(health, _effect.contusionSeconds, 0.6f);
+                EftBridge.DoContusion(health, _effect.contusionSeconds * left, 0.6f * left);
             }
 
-            if (_effect.stunSeconds > 0)
+            if (_effect.stunSeconds * left > 0.3f)
             {
-                EftBridge.DoStun(health, _effect.stunSeconds, 0.5f);
+                EftBridge.DoStun(health, _effect.stunSeconds * left, 0.5f * left);
             }
 
-            if (Chance(_effect.fractureChancePercent))
+            if (Chance(_effect.fractureChancePercent * left))
             {
                 EftBridge.DoFracture(health, part);
             }
 
-            if (Chance(_effect.bleedChancePercent))
+            if (Chance(_effect.bleedChancePercent * left))
             {
                 EftBridge.DoBleed(health, part);
             }

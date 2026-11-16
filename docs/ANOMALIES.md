@@ -46,7 +46,7 @@ The meter is in the game's UI, but EFT never feeds it a value; the plugin does.
 | Vortex (inside / around) | 0.8 / up to 0.15 | no |
 | Fruit Punch (inside / around) | 0.5 / up to 0.1 | **mostly** (0.85), and it also cuts the acid damage and intoxication |
 | Burner, springboard, electro (inside) | 0.2–0.3 | burner a little (smoke) |
-| **Carried artifacts** | tier 1→4: 0.02 / 0.04 / 0.08 / 0.15 each | no. Keep them in your **secure container**, which counts as shielded |
+| **Carried artifacts** | tier 1→4: 0.02 / 0.04 / 0.08 / 0.15 each | no. Keep them in your **secure container** or the **pocket special slots**, which count as shielded |
 
 "Around it" fades out to 3x the anomaly's radius (2x for hotspots), so you pick up dose just by walking through a field.
 
@@ -55,7 +55,27 @@ A mask's protection is multiplied by each anomaly type's `maskProtection`. For e
 80% x 85% = 68% of the acid damage over time, the radiation and the chance of intoxication. Physical hits (springboard
 slams, electro discharges) are never blocked.
 
-**Getting rid of it**: the body clears 0.01 / s by itself. **Vodka -30**, **moonshine -40**, whiskey -20, bad vodka -15.
+**Getting rid of it**: the body clears 0.01 / s by itself. **Vodka -30**, **moonshine -40**, whiskey -20, bad vodka -15,
+Pevko Light beer -10.
+
+**Special slots**: artifacts are allowed in the three pocket special slots (the server adds them to those slots' item
+filter at startup), and anything there is shielded like the secure container. Set `artifactsFitSpecialSlots` to false to
+turn this off; `shieldedSubSlots` lists the slot names.
+
+## Armour vs physical anomalies
+
+Bursts are physical hits: springboard slams, electro discharges, vortex slams. Armour softens them:
+
+* **Body**: the highest armour class in your **armour vest or armoured rig** (plates and soft inserts count) protects every
+  body part except the head, like a stalker suit.
+* **Head**: the highest class in your **headwear** slot.
+* Reduction is **10% per class, up to 60%** (`armor.reductionPerClass`, `armor.maxReduction`), multiplied by each type's
+  `armorProtection`: **springboard 0.9**, **vortex 0.7**, **electro 0.4** (current gets through metal), burner / fruit
+  punch / radiation 0 (no physical hit).
+* It reduces the burst's damage, the length and strength of contusion and stun, and the chance of fractures and bleeding.
+
+Example: a class 5 vest (50%) vs a springboard slam (x 0.9) absorbs 45%: 25 leg damage becomes ~14, and the fracture
+chance drops from 25% to ~14%.
 
 **What it does** (`stages`)
 

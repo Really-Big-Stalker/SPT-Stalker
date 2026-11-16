@@ -22,6 +22,7 @@ namespace SPTStalker.Client
 
         private AudioSource _detector;
         private RadiationSystem _radiation;
+        private ArmorTracker _armor;
         private float _beepTimer;
 
         private void Update()
@@ -66,10 +67,11 @@ namespace SPTStalker.Client
             var dt = Time.deltaTime;
             var nearest = float.MaxValue;
             var mask = _radiation?.MaskFactor ?? 0f;
+            _armor?.Tick(player, dt);
             float ambient = 0f, intake = 0f;
             foreach (var anomaly in _anomalies)
             {
-                var (a, i) = anomaly.Tick(pos, health, dt, mask);
+                var (a, i) = anomaly.Tick(pos, health, dt, mask, _armor);
                 ambient += a;
                 intake += i;
                 nearest = Mathf.Min(nearest, anomaly.EdgeDistance(pos));
@@ -130,6 +132,11 @@ namespace SPTStalker.Client
             if (layout.radiation != null && layout.radiation.enabled)
             {
                 _radiation = new RadiationSystem(layout.radiation, layout.artifacts, _root);
+            }
+
+            if (layout.armor != null)
+            {
+                _armor = new ArmorTracker(layout.armor, layout.armorClasses);
             }
 
             if (layout.fields == null || layout.fields.Length == 0)
@@ -196,6 +203,7 @@ namespace SPTStalker.Client
             _anomalies.Clear();
             _radiation?.Dispose();
             _radiation = null;
+            _armor = null;
             if (_root != null)
             {
                 Destroy(_root);

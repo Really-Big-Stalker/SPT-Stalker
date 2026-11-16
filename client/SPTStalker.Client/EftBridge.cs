@@ -140,8 +140,11 @@ namespace SPTStalker.Client
             return item == null ? null : TemplateId(item);
         }
 
-        /// <summary>Template ids of everything the player carries, skipping the given equipment slots.</summary>
-        public static System.Collections.Generic.List<string> CarriedTemplateIds(object player, string[] skipSlots)
+        /// <summary>
+        /// Template ids of everything the player carries, skipping the given equipment slots and anything inside
+        /// sub-slots with the given names (e.g. the pockets' SpecialSlot1-3).
+        /// </summary>
+        public static System.Collections.Generic.List<string> CarriedTemplateIds(object player, string[] skipSlots, string[] skipSubSlots)
         {
             var result = new System.Collections.Generic.List<string>();
             var slotType = EquipmentSlotType();
@@ -163,17 +166,79 @@ namespace SPTStalker.Client
                     continue;
                 }
 
-                var all = root.GetType().GetMethod("GetAllVisibleItems", BindingFlags.Instance | BindingFlags.Public)?.Invoke(root, null)
-                    as System.Collections.IEnumerable;
-                if (all == null)
+                var skipped = ItemsInSubSlots(root, skipSubSlots);
+                foreach (var item in AllItems(root))
                 {
-                    result.Add(TemplateId(root));
+                    if (!skipped.Contains(item))
+                    {
+                        result.Add(TemplateId(item));
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>Template ids of the items in the given equipment slots, including everything inside them (plates, inserts...).</summary>
+        public static System.Collections.Generic.List<string> SlotTemplateIds(object player, string[] slots)
+        {
+            var result = new System.Collections.Generic.List<string>();
+            foreach (var name in slots ?? new string[0])
+            {
+                var root = SlotItem(player, name);
+                if (root != null)
+                {
+                    result.AddRange(AllItems(root).Select(TemplateId));
+                }
+            }
+
+            return result;
+        }
+
+        private static System.Collections.Generic.IEnumerable<object> AllItems(object root)
+        {
+            var all = root.GetType().GetMethod("GetAllVisibleItems", BindingFlags.Instance | BindingFlags.Public)?.Invoke(root, null)
+                as System.Collections.IEnumerable;
+            if (all == null)
+            {
+                return new[] { root };
+            }
+
+            return all.Cast<object>().ToList();
+        }
+
+        /// <summary>Items (and their contents) sitting in sub-slots of `root` whose ID/name is in `names`.</summary>
+        private static System.Collections.Generic.HashSet<object> ItemsInSubSlots(object root, string[] names)
+        {
+            var result = new System.Collections.Generic.HashSet<object>();
+            if (names == null || names.Length == 0)
+            {
+                return result;
+            }
+
+            var slots = root.GetType().GetProperty("AllSlots", BindingFlags.Instance | BindingFlags.Public)?.GetValue(root)
+                as System.Collections.IEnumerable;
+            if (slots == null)
+            {
+                return result;
+            }
+
+            foreach (var slot in slots)
+            {
+                var t = slot.GetType();
+                var id = t.GetProperty("ID")?.GetValue(slot) as string ?? t.GetProperty("Name")?.GetValue(slot) as string;
+                if (id == null || !names.Any(n => string.Equals(n, id, StringComparison.OrdinalIgnoreCase)))
+                {
                     continue;
                 }
 
-                foreach (var item in all)
+                var contained = t.GetProperty("ContainedItem")?.GetValue(slot);
+                if (contained != null)
                 {
-                    result.Add(TemplateId(item));
+                    foreach (var item in AllItems(contained))
+                    {
+                        result.Add(item);
+                    }
                 }
             }
 
