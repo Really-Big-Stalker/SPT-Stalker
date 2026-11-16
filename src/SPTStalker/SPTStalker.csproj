@@ -26,6 +26,13 @@
     <None Include="data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <!-- Custom model bundles (see docs/ARTIFACT_MODELS.md); copied only once they exist -->
+    <None Include="bundles\**" Condition="Exists('bundles')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="bundles.json" Condition="Exists('bundles.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

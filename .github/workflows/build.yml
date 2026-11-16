@@ -26,7 +26,7 @@ jobs:
           mkdir -p dist/SPT/user/mods
           cp -r src/SPTStalker/bin/Release/SPTStalker dist/SPT/user/mods/SPTStalker
           # Only the mod's own assembly + data belong in the package
-          find dist/SPT/user/mods/SPTStalker -maxdepth 1 -type f ! -name 'SPTStalker.dll' ! -name 'SPTStalker.pdb' -delete
+          find dist/SPT/user/mods/SPTStalker -maxdepth 1 -type f ! -name 'SPTStalker.dll' ! -name 'SPTStalker.pdb' ! -name 'bundles.json' -delete
           ls -R dist
 
       - uses: actions/upload-artifact@v4
