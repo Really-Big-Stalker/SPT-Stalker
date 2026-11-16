@@ -10,7 +10,7 @@ A S.T.A.L.K.E.R.-inspired overhaul for **Single Player Tarkov 4.1.x** (server mo
 | 2 | **Zone contracts**: random daily/weekly faction hunts and artifact hand-ins with new condition combos | ✅ done |
 | 3 | **Artifacts**: 12 items in 4 tiers that spawn in stashes; 3D models | ✅ items, models Unity-ready, ⏳ bundles (built in the EFT SDK) |
 | 4 | Custom story quest line for the trader | planned |
-| 5 | New AI enemies (Zone factions) | planned (contracts use existing bots until then) |
+| 5 | **Loner stalkers**: roaming neutral groups that hunt artifacts at anomaly fields | ✅ first version, needs BigBrain (see [docs/STALKERS.md](docs/STALKERS.md)) |
 | 6 | **Anomalies**: new fields every raid, 6 types, detector, artifacts inside, **radiation + gas masks** | ✅ server + client plugin (first version, see [docs/ANOMALIES.md](docs/ANOMALIES.md)) |
 
 ## Stage 1: the Zone trader
@@ -71,7 +71,8 @@ Unity step, and how to bring in your own models, is in [docs/ARTIFACT_MODELS.md]
 
 1. Download the `SPTStalker` artifact from the latest successful **Build** run under the repo's Actions tab (or build it yourself, below).
 2. Copy the package's `SPT` folder over your SPT install. You get the server mod in `SPT/user/mods/SPTStalker/`
-   and the client plugin (anomalies) in `SPT/BepInEx/plugins/SPTStalker/SPTStalker.Client.dll`.
+   and the client plugins in `SPT/BepInEx/plugins/SPTStalker/` (`SPTStalker.Client.dll`: anomalies/radiation;
+   `SPTStalker.Bots.dll`: stalker AI, needs DrakiaXYZ's BigBrain; Waypoints recommended).
 3. Start the server. You should see:
    `[SPT-Stalker] 12 artifacts registered`, `[SPT-Stalker] Trader 'Bunker' is open for business (47 offers)` and
    `[SPT-Stalker] Zone contracts ready (5 factions, 9 modifiers)`.
