@@ -20,6 +20,13 @@ public class TraderAssortBuilder(
     GlobalTable globalTable,
     ICloner cloner)
 {
+    private static readonly Dictionary<string, MongoId> Currencies = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["RUB"] = Money.ROUBLES,
+        ["USD"] = Money.DOLLARS,
+        ["EUR"] = Money.EUROS
+    };
+
     public TraderAssort Build(MongoId traderId, AssortFile assortFile)
     {
         var assort = new TraderAssort
@@ -126,21 +133,15 @@ public class TraderAssortBuilder(
 
         if (offer.Price is not null)
         {
-            MongoId? currency = offer.Price.Currency.ToUpperInvariant() switch
-            {
-                "RUB" => Money.ROUBLES,
-                "USD" => Money.DOLLARS,
-                "EUR" => Money.EUROS,
-                _ => null
-            };
+            var currencyKnown = Currencies.TryGetValue(offer.Price.Currency, out var currency);
 
-            if (currency is null || offer.Price.Amount <= 0)
+            if (!currencyKnown || offer.Price.Amount <= 0)
             {
                 logger.Warning($"[SPT-Stalker] Skipping offer '{offer.Key}': bad price ({offer.Price.Currency} {offer.Price.Amount})");
                 return null;
             }
 
-            return [new BarterScheme { Template = currency.Value, Count = offer.Price.Amount }];
+            return [new BarterScheme { Template = currency, Count = offer.Price.Amount }];
         }
 
         if (offer.Barter is { Count: > 0 })

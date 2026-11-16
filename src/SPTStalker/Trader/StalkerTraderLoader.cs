@@ -9,6 +9,7 @@ using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Routers;
 using SPTarkov.Server.Core.Utils.Cloners;
+using Path = System.IO.Path;
 
 namespace SPTStalker.Trader;
 
