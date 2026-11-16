@@ -1,54 +1,95 @@
 # Artifact 3D models
 
-The artifacts work in game right away, using **placeholder models** borrowed from vanilla items
-(Christmas ornaments, a light bulb, a spark plug, etc. — set by `placeholderTpl` in
-`src/SPTStalker/data/artifacts/artifacts.json`). Their own models are made in two steps:
+Artifacts work in game right away using **placeholder models** borrowed from vanilla items (`placeholderTpl` in
+`src/SPTStalker/data/artifacts/artifacts.json`). Swapping in real models follows the SPT-Tushonka wiki guide
+**"WTT - Item Creation Guides Vol. 1: Intro to Static Objects"** (Blender → EFT SDK in Unity → asset bundle),
+with tools in this repo that do most of the clicking for you.
 
-1. **Meshes (done here):** `tools/artifact_models/generate.py` builds a model for each artifact procedurally.
-2. **Game asset bundles (needs Unity on your PC):** turn each mesh into an EFT item prefab and build an asset bundle.
-
-## 1. Meshes
-
-```bash
-python3 tools/artifact_models/generate.py
+```
+model (.glb/.fbx/.obj/.blend)                    any source: generated here, ChatGPT, Sketchfab...
+   │  tools/blender/prepare_for_tarkov.py         guide §3 (scale, origin, apply transforms) + texture bake
+   ▼
+art/artifacts/unity/<key>/  <key>.fbx, <key>.blend, <key>_diffuse.png, [<key>_normal.png], <key>_preview.png
+   │  EFT SDK + tools/unity/Editor/SptStalkerItemPrefabs.cs   guide §4–6 (shader, hierarchy, collider, pivot, label)
+   ▼
+item_sptstalker_<key>.bundle
+   │  copy to src/SPTStalker/bundles/  +  python3 tools/link_bundles.py
+   ▼
+in game (same item id, so artifacts players already have switch to the new model)
 ```
 
-Output (already committed):
+## What you need
 
-| Path | Contents |
+* **Blender** (3.0+; the scripts are tested with Blender 5.0)
+* **Unity Hub** + the **Escape From Tarkov SDK** project, opened with the Unity version the SDK asks for
+  (the guide's screenshots show **Unity 2019.4.39f1**)
+
+## 1. Get a model
+
+**Generated (already done):** `python3 tools/artifact_models/generate.py` writes `art/artifacts/models/<key>.glb`.
+
+**Your own / ChatGPT models:** any `.glb`, `.gltf`, `.fbx`, `.obj` or `.blend`. Guide tips:
+* Keep it under **~10k triangles** (the prep script reduces heavier models automatically, but a clean low-poly model looks better).
+* Textures are welcome (base colour / albedo, normal map). The prep script bakes them into one set.
+* Check the licence of anything you download.
+* Name the file after the artifact **key** (`jellyfish`, `stone_blood`, `night_star`...), so it replaces that artifact.
+
+## 2. Prepare it in Blender (guide §3)
+
+```bash
+# one model (your own: pick a size in metres; artifacts are ~0.06-0.10)
+blender -b -P tools/blender/prepare_for_tarkov.py -- --input path/to/model.fbx --name jellyfish --size 0.09
+
+# all generated models
+tools/blender/prepare_all_artifacts.sh
+```
+
+The script:
+* imports the model into an empty scene and joins it into one mesh,
+* scales it so its longest side is `--size` metres (`--size 0` keeps the model's own scale), sets
+  **Origin to Geometry**, **applies rotation & scale** and centres it at **0,0,0**,
+* reduces it to `--max-tris` (default 10000) if needed,
+* unwraps UVs and **bakes one diffuse texture** (plus a normal map if the source had one). Tarkov's specular shader
+  expects the look baked into the diffuse texture. Untextured models get their colours and glow baked in.
+* writes `<key>.fbx`, `<key>.blend`, `<key>_diffuse.png`, `[<key>_normal.png]` and `<key>_preview.png` (check this one!)
+  to `art/artifacts/unity/<key>/`.
+
+The 12 generated artifacts are already prepared and committed there.
+
+## 3. Build prefabs in the EFT SDK (guide §4–5)
+
+1. Copy `tools/unity/Editor/SptStalkerItemPrefabs.cs` into the SDK project as `Assets/Editor/SptStalkerItemPrefabs.cs`.
+2. Copy each `art/artifacts/unity/<key>/` folder to `Assets/SPTStalker/Models/<key>/`.
+   (If you use `.blend` files instead of `.fbx`, Blender must be installed for Unity to read them.)
+3. Run **SPT-Stalker → Build Item Prefabs**. For every model it:
+   * makes a material with the **Bumped Specular SMap** shader, assigns the baked textures and the guide's baseline values
+     (main colour white, specular 0.35, glossiness 1, reflection colour almost black); the Console lists the shader's
+     properties in case you want to fine-tune per material,
+   * builds `item_sptstalker_<key>`: an empty root at 0,0,0 with the model as its child,
+   * adds a **convex Mesh Collider** to the child mesh and the **PreviewPivot** script to the root,
+   * saves the prefab to `Assets/SPTStalker/Prefabs/` and sets its **AssetBundle label** to `item_sptstalker_<key>.bundle`.
+4. **Window → Item Preview**: drag each prefab root in, rotate it until it looks good, then
+   **Save current rotation to PreviewPivot** and **Render Icon** (guide §5.3).
+
+## 4. Build the bundles (guide §6)
+
+**Window → Asset Bundle Browser → Build tab → Build.** Wait until Unity is fully responsive again, or shaders may be
+missing in game.
+
+## 5. Put them in the mod
+
+1. Copy the built `item_sptstalker_<key>.bundle` files to `src/SPTStalker/bundles/`
+   (or straight into an installed mod: `SPT/user/mods/SPTStalker/bundles/`).
+2. Run `python3 tools/link_bundles.py`. It writes `bundles.json` and sets each artifact's `prefabPath` to its bundle.
+   Artifacts without a bundle keep their placeholder.
+3. Build the mod (or copy `bundles/`, `bundles.json` and `data/artifacts/artifacts.json` into the installed mod) and restart the server.
+
+## Troubleshooting (from the guide)
+
+| Problem | Fix |
 |---|---|
-| `art/artifacts/models/<key>.glb` | Binary glTF 2.0, Y-up, metres (6–11 cm across), smooth normals, vertex colours, PBR material with emissive glow; jellyfish, slime, flash and soul are translucent |
-| `art/artifacts/previews/<key>.png` | Quick render of each model |
-| `art/artifacts/previews/_sheet.png` | All artifacts on one sheet |
-
-Each shape is a short function in `generate.py` (`jellyfish()`, `thorn()`, ...). Tweak the numbers and re-run,
-or use the `.glb` as a base mesh to sculpt and texture properly in Blender.
-
-## 2. Asset bundles (Unity)
-
-The EFT client only loads models from Unity asset bundles built with the **same Unity version as the game**.
-Check the version on the `UnityPlayer.dll` in your game folder (right-click → Properties → Details).
-
-1. Create a Unity project with that exact version. Install a glTF importer (Unity's **glTFast** package, or UnityGLTF).
-2. Import the `.glb` files, then make a prefab per artifact. EFT item prefabs need the game's own item components and
-   layer setup. The SPT community's Unity SDK projects for EFT item modding provide these; the SPT modding Discord/hub
-   pins the current one for 4.x. A common shortcut is to extract a vanilla barter item's bundle, swap its mesh and
-   material for yours and keep its components.
-3. Set each prefab's AssetBundle name to `assets/content/items/sptstalker/<key>.bundle` and build the bundles.
-4. Copy the built bundles into the mod: `SPT/user/mods/SPTStalker/bundles/assets/content/items/sptstalker/<key>.bundle`
-   (in this repo: `src/SPTStalker/bundles/...`; the build already copies that folder).
-5. Add a `bundles.json` next to `SPTStalker.dll` (repo: `src/SPTStalker/bundles.json`) listing every bundle:
-
-   ```json
-   {
-     "manifest": [
-       { "key": "assets/content/items/sptstalker/jellyfish.bundle", "dependencyKeys": [] }
-     ]
-   }
-   ```
-
-   If your prefab uses shaders or textures from vanilla bundles, list those bundle keys in `dependencyKeys`.
-6. In `artifacts.json`, set the artifact's `"prefabPath"` to the path of the prefab **inside** the bundle, e.g.
-   `"assets/content/items/sptstalker/jellyfish.bundle"` (the key you used in step 3). Leave it empty to keep the placeholder.
-
-Restart the server. The artifact now uses the new model; nothing else changes (same item id, stashes keep working).
+| Purple model | The shader is missing: re-assign Bumped Specular SMap and its textures, rebuild |
+| Preview/icon off-centre | Re-run the prep script (it centres the origin) or move the PreviewPivot position by hand |
+| Item falls through the ground | The Mesh Collider is missing or on the wrong object (it belongs on the child mesh) |
+| Wrong size | Re-run the prep script with a different `--size`, then rebuild |
+| Placeholder still shows | Check `bundles.json` lists the bundle and `prefabPath` matches its file name exactly |

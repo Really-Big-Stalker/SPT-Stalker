@@ -370,10 +370,16 @@ BUILDERS = {
 
 # ----------------------------------------------------------------------------- GLB writer
 
+def srgb_to_linear(c):
+    """Colours in this file are picked as sRGB; glTF stores colour factors and COLOR_0 as linear."""
+    c = np.clip(np.asarray(c, dtype=np.float64), 0, 1)
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+
+
 def write_glb(path, mesh, mat, name):
     pos = mesh.v.astype(np.float32)
     nrm = mesh.normals().astype(np.float32)
-    col = np.hstack([np.clip(mesh.c, 0, 1), np.ones((len(mesh.c), 1))]).astype(np.float32)
+    col = np.hstack([srgb_to_linear(mesh.c), np.ones((len(mesh.c), 1))]).astype(np.float32)
     idx = mesh.f.astype(np.uint32).ravel()
 
     blobs, views, accessors = [], [], []
@@ -400,11 +406,11 @@ def write_glb(path, mesh, mat, name):
     material = {
         "name": f"{name}_mat",
         "pbrMetallicRoughness": {
-            "baseColorFactor": list(mat.get("color", (1, 1, 1, 1))),
+            "baseColorFactor": srgb_to_linear(mat.get("color", (1, 1, 1, 1))[:3]).tolist() + [mat.get("color", (1, 1, 1, 1))[3]],
             "metallicFactor": mat.get("metallic", 0.0),
             "roughnessFactor": mat.get("roughness", 0.5),
         },
-        "emissiveFactor": list(mat.get("emissive", (0, 0, 0))),
+        "emissiveFactor": srgb_to_linear(mat.get("emissive", (0, 0, 0))).tolist(),
         "doubleSided": True,
     }
     if mat.get("blend"):

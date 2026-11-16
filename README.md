@@ -8,7 +8,7 @@ A S.T.A.L.K.E.R.-inspired overhaul for **Single Player Tarkov 4.1.x** (server mo
 |---|---|---|
 | 1 | **Zone trader** "Bunker": a Cordon bunker trader with 4 loyalty levels | ✅ done |
 | 2 | **Zone contracts**: random daily/weekly faction hunts and artifact hand-ins with new condition combos | ✅ done |
-| 3 | **Artifacts**: 12 items in 4 tiers that spawn in stashes; procedural 3D models | ✅ items + meshes, ⏳ Unity bundles |
+| 3 | **Artifacts**: 12 items in 4 tiers that spawn in stashes; 3D models | ✅ items, models Unity-ready, ⏳ bundles (built in the EFT SDK) |
 | 4 | Custom story quest line for the trader | planned |
 | 5 | New AI enemies (Zone factions) | planned (contracts use existing bots until then) |
 | 6 | Anomalies | planned (needs a client/BepInEx plugin) |
@@ -63,9 +63,9 @@ Artifacts spawn in **buried barrel caches, ground caches, dead scavs, duffle bag
 map, weighted by rarity. The Bunker buys them, and they can be sold on the flea market. Edit `data/artifacts/artifacts.json`
 to change prices, spawn chances, containers, maps or text.
 
-They currently use placeholder models from vanilla items. Their own 3D models are in `art/artifacts/models/*.glb`
-(preview: `art/artifacts/previews/_sheet.png`). Turning them into game bundles needs Unity: see
-[docs/ARTIFACT_MODELS.md](docs/ARTIFACT_MODELS.md).
+They currently use placeholder models from vanilla items. Their own models are already prepared for the EFT SDK in
+`art/artifacts/unity/<key>/` (FBX + baked textures, preview: `art/artifacts/previews/_sheet_baked.png`). The remaining
+Unity step, and how to bring in your own models, is in [docs/ARTIFACT_MODELS.md](docs/ARTIFACT_MODELS.md).
 
 ## Install
 
@@ -137,5 +137,8 @@ src/SPTStalker/
 art/artifacts/                   generated 3D models (.glb) and previews
 tools/validate_data.py           data checks, also run in CI
 tools/artifact_models/           procedural artifact model generator
+tools/blender/                   prepare any model for the EFT SDK (scale, origin, bake textures, FBX)
+tools/unity/Editor/              EFT SDK editor script: builds item prefabs + bundle labels
+tools/link_bundles.py            built bundles -> bundles.json + artifact prefabPath
 docs/ARTIFACT_MODELS.md          meshes -> Unity bundles -> in game
 ```
