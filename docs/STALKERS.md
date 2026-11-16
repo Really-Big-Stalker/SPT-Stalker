@@ -50,12 +50,27 @@ While a stalker has no enemy, isn't under fire or healing, and has been calm for
 
 F12 → **SPT-Stalker Bots**: roaming on/off, anomaly field preference, search time, walking speed, calm-down time, debug log.
 
+## SAIN
+
+Supported (SAIN 4.5.x for SPT 4.x, ArchangelWTF's build; soft dependency):
+
+* SAIN already manages the Bloodhound role (brain `ArenaFighter`), so **stalkers fight with SAIN's AI** (its combat layers,
+  priority 20–24) and get SAIN personalities.
+* The roam layer sits at **19**, just below SAIN's combat, so a fight always wins.
+* SAIN tracks enemies itself, so when SAIN controls a stalker the roam layer also asks SAIN, through its public
+  `SAINExternal` API (the one QuestingBots uses), whether the bot is calm: no enemy sensed for the calm-down time
+  (`TimeSinceSenseEnemy`) and not fighting or searching a last known position (`CanBotQuest`).
+* Without SAIN everything works as before.
+
+SAIN's own extract layer (24) can make stalkers leave the raid late on, like other SAIN-controlled bots.
+
 ## First test checklist
 
 1. Server console at startup: `Loner stalkers ready (role arenaFighterEvent, up to N groups across all maps)`.
-2. BepInEx log at game start: `SPT-Stalker Bots loaded (Waypoints found)`.
+2. BepInEx log at game start: `SPT-Stalker Bots loaded (Waypoints found, SAIN found)`, then
+   `SAIN detected, stalkers use SAIN's enemy awareness` once a stalker starts roaming.
 3. In raid (Woods is best), when a group spawns, the log shows one line per stalker:
-   `stalker Grach (leader), brain 'ArenaFighter', active layer 'SPTStalkerRoam'`.
+   `stalker Grach (leader), brain 'ArenaFighter', active layer 'SPTStalkerRoam', SAIN personality 'Normal'`.
    * If the **active layer** is never `SPTStalkerRoam`, send me the **brain** name from that line; the layer is registered
      for a list of brain names, and that tells me which one the role really uses.
 4. Turn on **Debug log** to see `[Grach] heading to ... / arrived, searching`.
