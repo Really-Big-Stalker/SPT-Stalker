@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BepInEx client plugin (runs inside the game). Talks to EFT through reflection (see EftBridge.cs),
+    so it only compiles against Unity + BepInEx and doesn't need the game's assemblies.
+    Output: bin/Release/SPTStalker.Client.dll  ->  SPT/BepInEx/plugins/SPTStalker/
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SPTStalker.Client</AssemblyName>
+    <RootNamespace>SPTStalker.Client</RootNamespace>
+    <Version>0.1.0</Version>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.*" IncludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

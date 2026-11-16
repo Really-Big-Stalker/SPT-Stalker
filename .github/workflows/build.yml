@@ -18,15 +18,20 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
-      - name: Build
+      - name: Build server mod
         run: dotnet build src/SPTStalker/SPTStalker.csproj -c Release
 
-      - name: Package for SPT (user/mods/SPTStalker)
+      - name: Build client plugin
+        run: dotnet build client/SPTStalker.Client/SPTStalker.Client.csproj -c Release
+
+      - name: Package for SPT (user/mods/SPTStalker + BepInEx/plugins/SPTStalker)
         run: |
           mkdir -p dist/SPT/user/mods
           cp -r src/SPTStalker/bin/Release/SPTStalker dist/SPT/user/mods/SPTStalker
           # Only the mod's own assembly + data belong in the package
           find dist/SPT/user/mods/SPTStalker -maxdepth 1 -type f ! -name 'SPTStalker.dll' ! -name 'SPTStalker.pdb' ! -name 'bundles.json' -delete
+          mkdir -p dist/SPT/BepInEx/plugins/SPTStalker
+          cp client/SPTStalker.Client/bin/Release/SPTStalker.Client.dll dist/SPT/BepInEx/plugins/SPTStalker/
           ls -R dist
 
       - uses: actions/upload-artifact@v4
