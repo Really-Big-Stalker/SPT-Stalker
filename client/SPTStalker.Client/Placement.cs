@@ -37,6 +37,7 @@ namespace SPTStalker.Client
         private static bool IsGood(Vector3 candidate, float radius, AnomalyPlacementData rules, out Vector3 ground, out string reason)
         {
             ground = candidate;
+            reason = "";
 
             // Drop onto the surface below (from a little above, so we land on the floor/terrain, not a shelf top below eye level)
             if (!Physics.Raycast(candidate + Vector3.up * 3f, Vector3.down, out var hit, 12f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
