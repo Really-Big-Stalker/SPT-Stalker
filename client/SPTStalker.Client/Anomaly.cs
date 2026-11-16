@@ -30,7 +30,7 @@ namespace SPTStalker.Client
             _type = type;
             _effect = effect;
             Radius = radius;
-            Position = SnapToGround(position);
+            Position = position; // already checked and grounded by Placement
             _seed = seed * 0.37f;
 
             _go = new GameObject($"SPTStalker.Anomaly.{type}");
@@ -219,16 +219,5 @@ namespace SPTStalker.Client
         }
 
         private static bool Chance(float percent) => percent > 0 && Random.value * 100f < percent;
-
-        private static Vector3 SnapToGround(Vector3 p)
-        {
-            // Anomalies are rolled around loot points; drop each onto whatever surface is below it
-            if (Physics.Raycast(p + Vector3.up * 2f, Vector3.down, out var hit, 8f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                return hit.point;
-            }
-
-            return p;
-        }
     }
 }

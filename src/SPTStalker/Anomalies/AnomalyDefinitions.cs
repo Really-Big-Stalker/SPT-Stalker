@@ -16,6 +16,18 @@ public record AnomalyFile
     [JsonPropertyName("minDistanceBetweenFields")]
     public double MinDistanceBetweenFields { get; set; } = 60;
 
+    /// <summary>
+    /// Where field centres come from: "botSpawns" (the map's AI spawn points: open, walkable ground, mostly
+    /// outdoors) or "loot" (loose-loot points: can be indoors, on shelves...). botSpawns falls back to loot
+    /// on maps with too few spawn points.
+    /// </summary>
+    [JsonPropertyName("positionSource")]
+    public string PositionSource { get; set; } = "botSpawns";
+
+    /// <summary>The client checks each anomaly's spot in the actual level and moves or drops cramped ones.</summary>
+    [JsonPropertyName("placement")]
+    public AnomalyPlacement Placement { get; set; } = new();
+
     /// <summary>Map id (bigmap, woods, ...) to settings; "default" is used for maps not listed.</summary>
     [JsonPropertyName("maps")]
     public Dictionary<string, MapAnomalySettings> Maps { get; set; } = [];
@@ -28,6 +40,34 @@ public record AnomalyFile
 
     [JsonPropertyName("armor")]
     public ArmorSettings Armor { get; set; } = new();
+}
+
+/// <summary>Rules the client uses to keep anomalies in open, reachable places.</summary>
+public record AnomalyPlacement
+{
+    /// <summary>Reject spots with a roof/ceiling within this many metres above (0 = allow indoors).</summary>
+    [JsonPropertyName("minOpenSky")]
+    public float MinOpenSky { get; set; } = 8;
+
+    /// <summary>Free space needed around an anomaly beyond its own radius, in metres.</summary>
+    [JsonPropertyName("clearance")]
+    public float Clearance { get; set; } = 2;
+
+    /// <summary>How many of the 12 directions around the spot may be blocked within radius + clearance.</summary>
+    [JsonPropertyName("maxBlockedDirections")]
+    public int MaxBlockedDirections { get; set; } = 2;
+
+    /// <summary>Spot must be within this distance of walkable ground (the AI navmesh).</summary>
+    [JsonPropertyName("maxNavMeshDistance")]
+    public float MaxNavMeshDistance { get; set; } = 1.5f;
+
+    /// <summary>Attempts to find a good spot inside the field before an anomaly is dropped.</summary>
+    [JsonPropertyName("attempts")]
+    public int Attempts { get; set; } = 8;
+
+    /// <summary>Field radius in metres the client may search for a better spot (from the map settings).</summary>
+    [JsonPropertyName("fieldRadius")]
+    public float FieldRadius { get; set; } = 8;
 }
 
 /// <summary>How worn armour softens physical anomaly hits (springboard slams, electro discharges...).</summary>
@@ -309,6 +349,9 @@ public record AnomalyLayout
 
     [JsonPropertyName("armor")]
     public ArmorSettings Armor { get; set; } = new();
+
+    [JsonPropertyName("placement")]
+    public AnomalyPlacement Placement { get; set; } = new();
 
     /// <summary>Armour class of every item that has one (vests, rigs, plates, inserts, helmets).</summary>
     [JsonPropertyName("armorClasses")]

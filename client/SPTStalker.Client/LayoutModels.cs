@@ -15,6 +15,18 @@ namespace SPTStalker.Client
         public ArtifactRadiation[] artifacts;
         public ArmorSettings armor;
         public ArmorClass[] armorClasses;
+        public AnomalyPlacementData placement;
+    }
+
+    [Serializable]
+    internal class AnomalyPlacementData
+    {
+        public float minOpenSky = 8;
+        public float clearance = 2;
+        public int maxBlockedDirections = 2;
+        public float maxNavMeshDistance = 1.5f;
+        public int attempts = 8;
+        public float fieldRadius = 8;
     }
 
     [Serializable]

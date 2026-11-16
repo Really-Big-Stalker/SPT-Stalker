@@ -8,7 +8,7 @@ Every raid rolls a new set of anomaly fields. They're never in the same place tw
 raid starts ─► server (SPTStalker.dll)                          client (BepInEx plugin SPTStalker.Client.dll)
                builds the raid's location + loot                  waits for the raid's GameWorld + player
                └─ rolls anomaly fields for this map               └─ GET /sptstalker/anomalies
-                  · positions from the map's loot points             · snaps each anomaly to the ground
+                  · centred on the map's AI spawn points             · checks each spot in the real level
                   · ≥ 40 m from player spawns, ≥ 60 m apart          · light + hum + damage zone
                   · maybe an artifact of the field's family          · detector beeps as you get close
                     placed at the centre as real loot
@@ -93,6 +93,22 @@ A **Geiger counter** clicks faster the more radiation is around you, including f
 the F12 menu (4. Detector & sounds).
 
 The dose resets at the start of every raid (for now).
+
+## Placement: open areas only
+
+Field centres come from the map's **AI spawn points** (`positionSource: "botSpawns"`), which sit on open, walkable ground
+in the zones bots use. Maps with fewer than 15 fall back to loose-loot points (`"loot"`). Then the client checks every
+anomaly in the actual level before building it (`placement` in `anomalies.json`):
+
+| Check | Default | Rejects |
+|---|---|---|
+| Walkable ground | on the AI navmesh within 1.5 m | shelves, furniture, lockers, roofs of props |
+| Open sky | nothing overhead within 8 m (`minOpenSky`, 0 = allow indoors) | rooms, stairwells, under bridges/overhangs |
+| Clearance | radius + 2 m free in at least 10 of 12 directions | cramped rooms, corridors, doorways, gaps between buildings |
+
+A rejected anomaly tries up to 8 other spots inside its field; if none pass, it's left out (the log says how many).
+This keeps anomalies from cutting off routes. Turn on **Show anomaly markers** (F12 → Debug) to see where they landed and
+why any were dropped.
 
 ## Per-map settings
 

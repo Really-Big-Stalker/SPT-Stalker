@@ -2,6 +2,14 @@
   "enabled": true,
   "minDistanceFromPlayerSpawn": 40,
   "minDistanceBetweenFields": 60,
+  "positionSource": "botSpawns",
+  "placement": {
+    "minOpenSky": 8,
+    "clearance": 2,
+    "maxBlockedDirections": 2,
+    "maxNavMeshDistance": 1.5,
+    "attempts": 8
+  },
   "maps": {
     "default": {
       "fields": [

@@ -78,7 +78,8 @@ public class AnomalyLayoutService(
             return;
         }
 
-        var candidates = CandidatePoints(locationName);
+        layout.Placement = _config.Placement with { FieldRadius = (float)settings.FieldRadius };
+        var candidates = CandidatePoints(locationName, raidLocation);
         if (candidates.Count == 0)
         {
             logger.Debug($"[SPT-Stalker] No anomaly positions for {locationName}");
@@ -172,8 +173,24 @@ public class AnomalyLayoutService(
         }).ToList();
     }
 
-    private List<Vector3> CandidatePoints(string locationName)
+    private List<Vector3> CandidatePoints(string locationName, LocationBase raidLocation)
     {
+        if (_config.PositionSource.Equals("botSpawns", StringComparison.OrdinalIgnoreCase))
+        {
+            // AI spawn points sit on open, walkable ground (zones bots spawn and patrol in), mostly outdoors
+            var botPoints = (raidLocation.SpawnPointParams ?? [])
+                .Where(s => s.Position is not null && s.Categories is not null
+                            && (s.Categories.Contains("Bot") || s.Categories.Contains("Boss")))
+                .Select(s => s.Position!.Value)
+                .ToList();
+            if (botPoints.Count >= 15)
+            {
+                return botPoints;
+            }
+
+            logger.Debug($"[SPT-Stalker] {locationName}: only {botPoints.Count} bot spawn points, using loot points for anomalies");
+        }
+
         var location = locationTable.GetLocation(locationName);
         var spawnpoints = location?.LooseLoot?.Value?.Spawnpoints;
         if (spawnpoints is null)

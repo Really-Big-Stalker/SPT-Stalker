@@ -163,6 +163,8 @@ namespace SPTStalker.Client
 
             var effects = (layout.types ?? Array.Empty<AnomalyTypeData>()).Where(t => t.effect != null).ToDictionary(t => t.key, t => t.effect);
             var seed = 1;
+            var rules = layout.placement ?? new AnomalyPlacementData();
+            var dropped = 0;
             foreach (var field in layout.fields)
             {
                 if (!effects.TryGetValue(field.type, out var effect) || field.anomalies == null)
@@ -172,8 +174,25 @@ namespace SPTStalker.Client
 
                 foreach (var a in field.anomalies)
                 {
-                    _anomalies.Add(new Anomaly(_root.transform, field.type, effect, a.position, a.radius, seed++));
+                    // Keep anomalies in open, walkable places: move cramped/indoor ones within the field, or drop them
+                    if (!Placement.FindSpot(a.position, field.center, a.radius, rules, out var spot, out var reason))
+                    {
+                        dropped++;
+                        if (Plugin.DebugMarkers.Value)
+                        {
+                            Plugin.Log.LogInfo($"SPT-Stalker: dropped a {field.type} near {a.position} ({reason})");
+                        }
+
+                        continue;
+                    }
+
+                    _anomalies.Add(new Anomaly(_root.transform, field.type, effect, spot, a.radius, seed++));
                 }
+            }
+
+            if (dropped > 0)
+            {
+                Plugin.Log.LogInfo($"SPT-Stalker: {dropped} anomalies had no open spot and were left out");
             }
 
             _detector = _root.AddComponent<AudioSource>();
