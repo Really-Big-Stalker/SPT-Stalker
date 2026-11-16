@@ -1,0 +1,597 @@
+{
+  "offers": [
+    {
+      "key": "rookie_pm",
+      "name": "PM pistol",
+      "tpl": "5448bd6b4bdc2dfc2f8b4569",
+      "loyaltyLevel": 1,
+      "stock": 6,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 11000
+      }
+    },
+    {
+      "key": "rookie_pm_mag",
+      "name": "PM 8-round magazine",
+      "tpl": "5448c12b4bdc2d02308b456f",
+      "loyaltyLevel": 1,
+      "stock": 20,
+      "buyLimit": 6,
+      "price": {
+        "currency": "RUB",
+        "amount": 1200
+      }
+    },
+    {
+      "key": "ammo_9x18_pst",
+      "name": "9x18 PST gzh",
+      "tpl": "5737201124597760fc4431f1",
+      "loyaltyLevel": 1,
+      "stock": 1000,
+      "buyLimit": 300,
+      "price": {
+        "currency": "RUB",
+        "amount": 75
+      }
+    },
+    {
+      "key": "rookie_sawnoff",
+      "name": "MP-43 sawn-off",
+      "tpl": "64748cb8de82c85eaf0a273a",
+      "loyaltyLevel": 1,
+      "stock": 4,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 17000
+      }
+    },
+    {
+      "key": "ammo_12_buck",
+      "name": "12/70 5.25mm buckshot",
+      "tpl": "5d6e6772a4b936088465b17c",
+      "loyaltyLevel": 1,
+      "stock": 1000,
+      "buyLimit": 200,
+      "price": {
+        "currency": "RUB",
+        "amount": 60
+      }
+    },
+    {
+      "key": "ammo_12_7mm",
+      "name": "12/70 7mm buckshot",
+      "tpl": "560d5e524bdc2d25448b4571",
+      "loyaltyLevel": 1,
+      "stock": 600,
+      "buyLimit": 120,
+      "price": {
+        "currency": "RUB",
+        "amount": 110
+      }
+    },
+    {
+      "key": "med_bandage",
+      "name": "Army bandage",
+      "tpl": "5751a25924597722c463c472",
+      "loyaltyLevel": 1,
+      "stock": 40,
+      "price": {
+        "currency": "RUB",
+        "amount": 800
+      }
+    },
+    {
+      "key": "med_ai2",
+      "name": "AI-2 medkit",
+      "tpl": "5755356824597772cb798962",
+      "loyaltyLevel": 1,
+      "stock": 30,
+      "buyLimit": 10,
+      "price": {
+        "currency": "RUB",
+        "amount": 2200
+      }
+    },
+    {
+      "key": "med_car",
+      "name": "Car first aid kit",
+      "tpl": "590c661e86f7741e566b646a",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "buyLimit": 4,
+      "price": {
+        "currency": "RUB",
+        "amount": 7500
+      }
+    },
+    {
+      "key": "food_stew",
+      "name": "Beef stew (tourist's delight)",
+      "tpl": "57347d7224597744596b4e72",
+      "loyaltyLevel": 1,
+      "stock": 15,
+      "buyLimit": 5,
+      "price": {
+        "currency": "RUB",
+        "amount": 9000
+      }
+    },
+    {
+      "key": "food_sausage",
+      "name": "Salty Dog beef sausage",
+      "tpl": "635a758bfefc88a93f021b8a",
+      "loyaltyLevel": 1,
+      "stock": 15,
+      "buyLimit": 5,
+      "price": {
+        "currency": "RUB",
+        "amount": 8000
+      }
+    },
+    {
+      "key": "food_bread",
+      "name": "Rye croutons",
+      "tpl": "57347d3d245977448f7b7f61",
+      "loyaltyLevel": 1,
+      "stock": 20,
+      "buyLimit": 6,
+      "price": {
+        "currency": "RUB",
+        "amount": 6500
+      }
+    },
+    {
+      "key": "drink_vodka",
+      "name": "Tarkovskaya vodka (rad remedy)",
+      "tpl": "5d40407c86f774318526545a",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "buyLimit": 4,
+      "price": {
+        "currency": "RUB",
+        "amount": 14000
+      }
+    },
+    {
+      "key": "drink_energy",
+      "name": "Hot Rod energy drink",
+      "tpl": "5751496424597720a27126da",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "buyLimit": 4,
+      "price": {
+        "currency": "RUB",
+        "amount": 9500
+      }
+    },
+    {
+      "key": "throw_f1",
+      "name": "F-1 grenade",
+      "tpl": "5710c24ad2720bc3458b45a3",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "buyLimit": 3,
+      "price": {
+        "currency": "RUB",
+        "amount": 9000
+      }
+    },
+    {
+      "key": "throw_rgd5",
+      "name": "RGD-5 grenade",
+      "tpl": "5448be9a4bdc2dfd2f8b456a",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "buyLimit": 3,
+      "price": {
+        "currency": "RUB",
+        "amount": 10500
+      }
+    },
+    {
+      "key": "armor_paca",
+      "name": "PACA soft armor (rookie jacket)",
+      "tpl": "5648a7494bdc2d9d488b4583",
+      "loyaltyLevel": 1,
+      "stock": 3,
+      "buyLimit": 1,
+      "price": {
+        "currency": "RUB",
+        "amount": 26000
+      }
+    },
+    {
+      "key": "gear_flashlight",
+      "name": "Ultrafire flashlight",
+      "tpl": "57d17c5e2459775a5c57d17d",
+      "loyaltyLevel": 1,
+      "stock": 10,
+      "price": {
+        "currency": "RUB",
+        "amount": 4500
+      }
+    },
+    {
+      "key": "gear_duffle",
+      "name": "Duffle bag",
+      "tpl": "56e33634d2720bd8058b456b",
+      "loyaltyLevel": 1,
+      "stock": 5,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 9000
+      }
+    },
+    {
+      "key": "exp_aks74u",
+      "name": "AKS-74U",
+      "tpl": "57dc2fa62459775949412633",
+      "loyaltyLevel": 2,
+      "stock": 4,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 38000
+      }
+    },
+    {
+      "key": "exp_545_mag",
+      "name": "AK-74 30-round 6L23 magazine",
+      "tpl": "55d480c04bdc2d1d4e8b456a",
+      "loyaltyLevel": 2,
+      "stock": 20,
+      "buyLimit": 6,
+      "price": {
+        "currency": "RUB",
+        "amount": 3800
+      }
+    },
+    {
+      "key": "ammo_545_ps",
+      "name": "5.45x39 PS gs",
+      "tpl": "56dff3afd2720bba668b4567",
+      "loyaltyLevel": 2,
+      "stock": 1200,
+      "buyLimit": 360,
+      "price": {
+        "currency": "RUB",
+        "amount": 190
+      }
+    },
+    {
+      "key": "exp_mp133",
+      "name": "MP-133 pump shotgun",
+      "tpl": "54491c4f4bdc2db1078b4568",
+      "loyaltyLevel": 2,
+      "stock": 4,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 28000
+      }
+    },
+    {
+      "key": "med_esmarch",
+      "name": "Esmarch tourniquet",
+      "tpl": "5e831507ea0a7c419c2f9bd9",
+      "loyaltyLevel": 2,
+      "stock": 20,
+      "price": {
+        "currency": "RUB",
+        "amount": 1400
+      }
+    },
+    {
+      "key": "med_ifak",
+      "name": "IFAK",
+      "tpl": "590c678286f77426c9660122",
+      "loyaltyLevel": 2,
+      "stock": 8,
+      "buyLimit": 3,
+      "price": {
+        "currency": "RUB",
+        "amount": 15000
+      }
+    },
+    {
+      "key": "med_morphine",
+      "name": "Morphine injector",
+      "tpl": "544fb3f34bdc2d03748b456a",
+      "loyaltyLevel": 2,
+      "stock": 6,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 21000
+      }
+    },
+    {
+      "key": "armor_6b2",
+      "name": "6B2 body armor",
+      "tpl": "5df8a2ca86f7740bfe6df777",
+      "loyaltyLevel": 2,
+      "stock": 3,
+      "buyLimit": 1,
+      "price": {
+        "currency": "RUB",
+        "amount": 42000
+      }
+    },
+    {
+      "key": "helmet_ssh68",
+      "name": "SSh-68 steel helmet",
+      "tpl": "5c06c6a80db834001b735491",
+      "loyaltyLevel": 2,
+      "stock": 3,
+      "buyLimit": 1,
+      "price": {
+        "currency": "RUB",
+        "amount": 19000
+      }
+    },
+    {
+      "key": "mask_gp5",
+      "name": "GP-5 gas mask",
+      "tpl": "5b432c305acfc40019478128",
+      "loyaltyLevel": 2,
+      "stock": 6,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 9500
+      }
+    },
+    {
+      "key": "barter_scav_pack",
+      "name": "Scav backpack for vodka",
+      "tpl": "56e335e4d2720b6c058b456d",
+      "loyaltyLevel": 2,
+      "stock": 4,
+      "buyLimit": 2,
+      "barter": [
+        {
+          "name": "DRINK_BOTTLE_OF_TARKOVSKAYA_VODKA",
+          "tpl": "5d40407c86f774318526545a",
+          "count": 1
+        },
+        {
+          "name": "BARTER_STRIKE_CIGARETTES",
+          "tpl": "5734770f24597738025ee254",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "vet_ak74n",
+      "name": "AK-74N",
+      "tpl": "5644bd2b4bdc2d3b4c8b4572",
+      "loyaltyLevel": 3,
+      "stock": 3,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 52000
+      }
+    },
+    {
+      "key": "ammo_545_bt",
+      "name": "5.45x39 BT gs",
+      "tpl": "56dff061d2720bb5668b4567",
+      "loyaltyLevel": 3,
+      "stock": 900,
+      "buyLimit": 240,
+      "price": {
+        "currency": "RUB",
+        "amount": 420
+      }
+    },
+    {
+      "key": "vet_akm",
+      "name": "AKM",
+      "tpl": "59d6088586f774275f37482f",
+      "loyaltyLevel": 3,
+      "stock": 3,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 58000
+      }
+    },
+    {
+      "key": "ammo_762x39_ps",
+      "name": "7.62x39 PS gzh",
+      "tpl": "5656d7c34bdc2d9d198b4587",
+      "loyaltyLevel": 3,
+      "stock": 900,
+      "buyLimit": 240,
+      "price": {
+        "currency": "RUB",
+        "amount": 260
+      }
+    },
+    {
+      "key": "med_salewa",
+      "name": "Salewa first aid kit",
+      "tpl": "544fb45d4bdc2dee738b4568",
+      "loyaltyLevel": 3,
+      "stock": 6,
+      "buyLimit": 3,
+      "price": {
+        "currency": "RUB",
+        "amount": 19000
+      }
+    },
+    {
+      "key": "med_propital",
+      "name": "Propital stimulant",
+      "tpl": "5c0e530286f7747fa1419862",
+      "loyaltyLevel": 3,
+      "stock": 5,
+      "buyLimit": 2,
+      "price": {
+        "currency": "USD",
+        "amount": 140
+      }
+    },
+    {
+      "key": "armor_6b23",
+      "name": "6B23-1 body armor",
+      "tpl": "5c0e5bab86f77461f55ed1f3",
+      "loyaltyLevel": 3,
+      "stock": 2,
+      "buyLimit": 1,
+      "price": {
+        "currency": "RUB",
+        "amount": 95000
+      }
+    },
+    {
+      "key": "mask_gp7",
+      "name": "GP-7 gas mask",
+      "tpl": "60363c0c92ec1c31037959f5",
+      "loyaltyLevel": 3,
+      "stock": 4,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 21000
+      }
+    },
+    {
+      "key": "barter_geiger_svds",
+      "name": "SVDS for a Geiger counter + gunpowder",
+      "tpl": "5c46fbd72e2216398b5a8c9c",
+      "loyaltyLevel": 3,
+      "stock": 2,
+      "buyLimit": 1,
+      "barter": [
+        {
+          "name": "BARTER_GEIGERMULLER_COUNTER",
+          "tpl": "5672cb724bdc2dc2088b456b",
+          "count": 2
+        },
+        {
+          "name": "BARTER_GUNPOWDER_EAGLE",
+          "tpl": "5d6fc78386f77449d825f9dc",
+          "count": 2
+        },
+        {
+          "name": "DRINK_BOTTLE_OF_FIERCE_HATCHLING_MOONSHINE",
+          "tpl": "5d1b376e86f774252519444e",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "ammo_762x54_lps",
+      "name": "7.62x54R LPS gzh",
+      "tpl": "5887431f2459777e1612938f",
+      "loyaltyLevel": 3,
+      "stock": 400,
+      "buyLimit": 120,
+      "price": {
+        "currency": "RUB",
+        "amount": 350
+      }
+    },
+    {
+      "key": "master_vss",
+      "name": "VSS Vintorez",
+      "tpl": "57838ad32459774a17445cd2",
+      "loyaltyLevel": 4,
+      "stock": 2,
+      "buyLimit": 1,
+      "price": {
+        "currency": "USD",
+        "amount": 1150
+      }
+    },
+    {
+      "key": "ammo_9x39_sp5",
+      "name": "9x39 SP-5 gs",
+      "tpl": "57a0dfb82459774d3078b56c",
+      "loyaltyLevel": 4,
+      "stock": 600,
+      "buyLimit": 180,
+      "price": {
+        "currency": "RUB",
+        "amount": 520
+      }
+    },
+    {
+      "key": "ammo_9x39_sp6",
+      "name": "9x39 SP-6 gs",
+      "tpl": "57a0e5022459774d1673f889",
+      "loyaltyLevel": 4,
+      "stock": 400,
+      "buyLimit": 120,
+      "price": {
+        "currency": "USD",
+        "amount": 9
+      }
+    },
+    {
+      "key": "med_grizzly",
+      "name": "Grizzly medical kit",
+      "tpl": "590c657e86f77412b013051d",
+      "loyaltyLevel": 4,
+      "stock": 4,
+      "buyLimit": 2,
+      "price": {
+        "currency": "RUB",
+        "amount": 28000
+      }
+    },
+    {
+      "key": "med_etg",
+      "name": "eTG-change stimulant",
+      "tpl": "5c0e534186f7747fa1419867",
+      "loyaltyLevel": 4,
+      "stock": 3,
+      "buyLimit": 1,
+      "price": {
+        "currency": "USD",
+        "amount": 320
+      }
+    },
+    {
+      "key": "barter_6b13",
+      "name": "6B13 assault armor for gold",
+      "tpl": "5c0e51be86f774598e797894",
+      "loyaltyLevel": 4,
+      "stock": 2,
+      "buyLimit": 1,
+      "barter": [
+        {
+          "name": "BARTER_GOLDEN_NECK_CHAIN",
+          "tpl": "5734758f24597738025ee253",
+          "count": 3
+        },
+        {
+          "name": "BARTER_MILITARY_CABLE",
+          "tpl": "5d0375ff86f774186372f685",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "barter_ratnik",
+      "name": "Ratnik-BSh helmet for bitcoin",
+      "tpl": "5a7c4850e899ef00150be885",
+      "loyaltyLevel": 4,
+      "stock": 2,
+      "buyLimit": 1,
+      "barter": [
+        {
+          "name": "BARTER_PHYSICAL_BITCOIN",
+          "tpl": "59faff1d86f7746c51718c9c",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

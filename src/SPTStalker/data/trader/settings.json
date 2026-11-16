@@ -1,0 +1,22 @@
+{
+  "restockMinutesMin": 60,
+  "restockMinutesMax": 120,
+  "listOffersOnFlea": true,
+  "defaultLocale": "en",
+  "locales": {
+    "en": {
+      "fullName": "Kuzma Bunker",
+      "firstName": "Kuzma",
+      "nickname": "Bunker",
+      "location": "Cordon bunker",
+      "description": "A heavy-set man who has run a trade bunker on the edge of the Zone since before the second Blowout. Nobody knows his real surname; everyone knows his prices. He buys whatever stalkers drag out of the anomalies, sells what keeps rookies breathing a day longer, and always has a job for someone who doesn't ask too many questions. \"Listen here, stalker: I don't do charity. Bring me something worth my while and we'll talk.\""
+    },
+    "ru": {
+      "fullName": "Кузьма Бункер",
+      "firstName": "Кузьма",
+      "nickname": "Бункер",
+      "location": "Бункер на Кордоне",
+      "description": "Грузный торговец, который держит бункер на краю Зоны ещё со времён второго Выброса. Настоящей фамилии никто не знает, зато цены знают все. Скупает всё, что сталкеры выносят из аномалий, продаёт то, что помогает новичкам прожить лишний день, и всегда найдёт работу для того, кто не задаёт лишних вопросов. «Слушай сюда, сталкер: благотворительностью я не занимаюсь. Принеси что-нибудь стоящее — тогда и поговорим»."
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>SPTStalker</RootNamespace>
+    <AssemblyName>SPTStalker</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <Version>0.1.0</Version>
+    <!-- Build output is laid out exactly like the folder that goes in SPT/user/mods/ -->
+    <OutputPath>bin\$(Configuration)\SPTStalker\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The SPT server already ships these assemblies; reference them for compiling only. -->
+    <PackageReference Include="SPTarkov.Common" Version="4.1.2" ExcludeAssets="runtime" />
+    <PackageReference Include="SPTarkov.DI" Version="4.1.2" ExcludeAssets="runtime" />
+    <PackageReference Include="SPTarkov.Server.Core" Version="4.1.2" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="data\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
