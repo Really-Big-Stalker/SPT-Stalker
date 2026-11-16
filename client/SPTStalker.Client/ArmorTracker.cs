@@ -49,7 +49,11 @@ namespace SPTStalker.Client
         }
 
         /// <summary>Share of a physical hit on `bodyPart` that armour absorbs (before the anomaly's own armorProtection).</summary>
-        public float For(string bodyPart) => bodyPart == "Head" ? HeadReduction : BodyReduction;
+        public float For(string bodyPart) =>
+            Mathf.Clamp01((bodyPart == "Head" ? HeadReduction : BodyReduction) * Plugin.ArmorEffectiveness.Value);
+
+        public int BodyClass => _bodyClass;
+        public int HeadClass => _headClass;
 
         private int BestClass(List<string> tpls)
         {

@@ -267,6 +267,25 @@ public record AnomalyEffect
     public float ArmorProtection { get; set; }
 }
 
+/// <summary>Raid-generation settings the client plugin sends from its F12 menu (POST /sptstalker/settings).</summary>
+public record ClientRaidSettings : SPTarkov.Server.Core.Models.Utils.IRequestData
+{
+    [JsonPropertyName("anomaliesEnabled")]
+    public bool AnomaliesEnabled { get; set; } = true;
+
+    /// <summary>Scales the number of anomaly fields per raid.</summary>
+    [JsonPropertyName("fieldCountMultiplier")]
+    public float FieldCountMultiplier { get; set; } = 1;
+
+    /// <summary>Scales the number of anomalies in each field.</summary>
+    [JsonPropertyName("fieldSizeMultiplier")]
+    public float FieldSizeMultiplier { get; set; } = 1;
+
+    /// <summary>Scales the chance a field holds an artifact.</summary>
+    [JsonPropertyName("artifactChanceMultiplier")]
+    public float ArtifactChanceMultiplier { get; set; } = 1;
+}
+
 // ------------------------------------------------------------- layout sent to the client
 
 /// <summary>What the client receives from /sptstalker/anomalies for the current raid.</summary>

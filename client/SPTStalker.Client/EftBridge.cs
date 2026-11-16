@@ -16,7 +16,7 @@ namespace SPTStalker.Client
         private static Type _gameWorldType, _damageInfoType, _bodyPartType, _damageTypeType, _requestHandlerType;
         private static FieldInfo _mainPlayerField, _diDamageType, _diDamage, _diHitPoint, _diDirection;
         private static PropertyInfo _locationIdProp;
-        private static MethodInfo _getJson;
+        private static MethodInfo _getJson, _postJson;
 
         public static bool Ready { get; private set; }
 
@@ -44,6 +44,7 @@ namespace SPTStalker.Client
             _diHitPoint = _damageInfoType?.GetField("HitPoint");
             _diDirection = _damageInfoType?.GetField("Direction");
             _getJson = _requestHandlerType?.GetMethod("GetJson", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
+            _postJson = _requestHandlerType?.GetMethod("PostJson", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string), typeof(string) }, null);
 
             var missing = new (string, object)[]
             {
@@ -281,6 +282,8 @@ namespace SPTStalker.Client
         // ---------------------------------------------------------------- server
 
         public static string GetJson(string path) => _getJson.Invoke(null, new object[] { path }) as string;
+
+        public static string PostJson(string path, string json) => _postJson?.Invoke(null, new object[] { path, json }) as string;
 
         // ---------------------------------------------------------------- helpers
 

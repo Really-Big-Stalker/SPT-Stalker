@@ -24,6 +24,20 @@ public class AnomalyLayoutService(
     private readonly ConcurrentDictionary<MongoId, AnomalyLayout> _layouts = new();
     private AnomalyFile _config = new();
     private List<ArmorClassDto> _armorClasses = [];
+    private readonly ConcurrentDictionary<MongoId, ClientRaidSettings> _clientSettings = new();
+
+    public void SetClientSettings(MongoId sessionId, ClientRaidSettings settings)
+    {
+        _clientSettings[sessionId] = settings with
+        {
+            FieldCountMultiplier = Math.Clamp(settings.FieldCountMultiplier, 0, 5),
+            FieldSizeMultiplier = Math.Clamp(settings.FieldSizeMultiplier, 0.2f, 5),
+            ArtifactChanceMultiplier = Math.Clamp(settings.ArtifactChanceMultiplier, 0, 10)
+        };
+        logger.Info($"[SPT-Stalker] Raid settings from client: anomalies {(settings.AnomaliesEnabled ? "on" : "off")}, " +
+                    $"fields x{settings.FieldCountMultiplier:0.##}, field size x{settings.FieldSizeMultiplier:0.##}, " +
+                    $"artifact chance x{settings.ArtifactChanceMultiplier:0.##}");
+    }
 
     public void Configure(AnomalyFile config, List<ArmorClassDto> armorClasses)
     {
@@ -48,7 +62,8 @@ public class AnomalyLayoutService(
         };
         _layouts[sessionId] = layout;
 
-        if (!_config.Enabled || mapKey == "hideout")
+        var client = _clientSettings.GetValueOrDefault(sessionId) ?? new ClientRaidSettings();
+        if (!_config.Enabled || !client.AnomaliesEnabled || mapKey == "hideout")
         {
             return;
         }
@@ -57,7 +72,7 @@ public class AnomalyLayoutService(
                        ?? _config.Maps.GetValueOrDefault("default")
                        ?? new MapAnomalySettings();
 
-        var fieldCount = Roll(settings.Fields);
+        var fieldCount = (int)Math.Round(Roll(settings.Fields) * client.FieldCountMultiplier);
         if (fieldCount <= 0)
         {
             return;
@@ -105,7 +120,7 @@ public class AnomalyLayoutService(
             }
 
             var field = new AnomalyFieldDto { Type = type.Key, Center = ToVec(center) };
-            var count = Math.Max(1, Roll(settings.AnomaliesPerField));
+            var count = Math.Max(1, (int)Math.Round(Roll(settings.AnomaliesPerField) * client.FieldSizeMultiplier));
             for (var i = 0; i < count; i++)
             {
                 // First anomaly sits on the centre, the rest spread around it; the client snaps them to the ground
@@ -123,7 +138,7 @@ public class AnomalyLayoutService(
                 });
             }
 
-            if (!string.IsNullOrEmpty(type.Family) && Random.Shared.NextDouble() * 100 < settings.ArtifactChancePercent)
+            if (!string.IsNullOrEmpty(type.Family) && Random.Shared.NextDouble() * 100 < settings.ArtifactChancePercent * client.ArtifactChanceMultiplier)
             {
                 var artifact = PickWeighted(
                     artifactRegistry.All.Where(a => a.Definition.Anomaly.Equals(type.Family, StringComparison.OrdinalIgnoreCase)).ToList(),

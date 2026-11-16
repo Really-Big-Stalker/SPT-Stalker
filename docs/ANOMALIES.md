@@ -90,7 +90,7 @@ Each stage can also start the game's own "radiation exposure" status effect (`ga
 default because how long that effect lasts hasn't been tested yet.
 
 A **Geiger counter** clicks faster the more radiation is around you, including from what you carry. Its volume is in
-the BepInEx config (F1 → Radiation).
+the F12 menu (4. Detector & sounds).
 
 The dose resets at the start of every raid (for now).
 
@@ -107,11 +107,24 @@ The dose resets at the start of every raid (for now).
 | `artifactChancePercent` | chance a field has an artifact in the middle |
 | `typeWeights` | type key → relative chance on this map (e.g. Woods favours springboards, Reserve radiation) |
 
-## Client settings (BepInEx config / F1 menu)
+## In-game settings (F12)
 
-`BepInEx/config/com.sptstalker.client.cfg`: enable/disable, **damage multiplier**, hum volume, **detector**
-(on/off, range, volume), and **Show markers**, which draws a sphere for every anomaly. That's handy for checking a
-layout the first time.
+Press **F12** in game (BepInEx Configuration Manager) and open **SPT-Stalker**. Changes apply immediately unless noted.
+
+| Section | Settings |
+|---|---|
+| **0. Status** | live line: `Radiation 34/100 (Irradiated) · GP-5 gas mask (80%) · armour body 4 / head 3 · 14 anomalies` |
+| **1. Anomalies** | on/off, anomaly damage multiplier |
+| **2. Radiation** | on/off, radiation from anomalies, from carried artifacts, radiation sickness damage, natural recovery speed, alcohol strength |
+| **3. Protection** | gas mask effectiveness, armour effectiveness |
+| **4. Detector & sounds** | anomaly detector on/off, range, volume; Geiger counter volume; anomaly hum volume* |
+| **5. Raid generation** | spawn anomalies, number of fields, anomalies per field, artifact chance in fields. **Sent to the server, apply from the next raid** |
+| **6. Debug** | show anomaly markers* |
+
+\* applies to anomalies built from the next raid on.
+
+The same settings live in `BepInEx/config/com.sptstalker.client.cfg`. Everything else (per-map counts, per-type
+damage, gas mask and cure lists, radiation stages) stays in the server's `data/anomalies/anomalies.json`.
 
 ## Install
 

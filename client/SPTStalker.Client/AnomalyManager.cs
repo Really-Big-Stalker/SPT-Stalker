@@ -27,7 +27,7 @@ namespace SPTStalker.Client
 
         private void Update()
         {
-            if (!Plugin.AnomaliesEnabled.Value || _bridgeFailed)
+            if (_bridgeFailed)
             {
                 return;
             }
@@ -47,7 +47,13 @@ namespace SPTStalker.Client
                 }
 
                 _poll = PollInterval;
-                TryBuild();
+                SettingsSync.TrySend();
+                StatusInfo.Text = "Not in raid";
+                if (Plugin.AnomaliesEnabled.Value || Plugin.RadiationEnabled.Value)
+                {
+                    TryBuild();
+                }
+
                 return;
             }
 
@@ -66,23 +72,33 @@ namespace SPTStalker.Client
             var pos = EftBridge.PlayerPosition(player);
             var dt = Time.deltaTime;
             var nearest = float.MaxValue;
+            _radiation?.TickScan(player, 0f);
             var mask = _radiation?.MaskFactor ?? 0f;
             _armor?.Tick(player, dt);
             float ambient = 0f, intake = 0f;
-            foreach (var anomaly in _anomalies)
+            if (Plugin.AnomaliesEnabled.Value)
             {
-                var (a, i) = anomaly.Tick(pos, health, dt, mask, _armor);
-                ambient += a;
-                intake += i;
-                nearest = Mathf.Min(nearest, anomaly.EdgeDistance(pos));
-            }
+                foreach (var anomaly in _anomalies)
+                {
+                    var (a, i) = anomaly.Tick(pos, health, dt, mask, _armor);
+                    ambient += a;
+                    intake += i;
+                    nearest = Mathf.Min(nearest, anomaly.EdgeDistance(pos));
+                }
 
-            UpdateDetector(nearest, dt);
+                UpdateDetector(nearest, dt);
+            }
 
             if (_radiation != null && Plugin.RadiationEnabled.Value)
             {
                 _radiation.Tick(player, health, ambient, intake, dt);
             }
+            else
+            {
+                _radiation?.TickScan(player, dt);
+            }
+
+            UpdateStatus(dt);
         }
 
         private void TryBuild()
@@ -166,6 +182,25 @@ namespace SPTStalker.Client
             _detector.playOnAwake = false;
 
             Plugin.Log.LogInfo($"SPT-Stalker: {layout.fields.Length} anomaly fields ({_anomalies.Count} anomalies) on {location}");
+        }
+
+        private float _statusTimer;
+
+        private void UpdateStatus(float dt)
+        {
+            _statusTimer -= dt;
+            if (_statusTimer > 0)
+            {
+                return;
+            }
+
+            _statusTimer = 0.5f;
+            var rad = _radiation != null && Plugin.RadiationEnabled.Value
+                ? $"Radiation {RadiationSystem.Dose:0}/{RadiationSystem.MaxDose:0} ({_radiation.StageName})"
+                : "Radiation off";
+            var mask = _radiation?.MaskName != null ? $"{_radiation.MaskName} ({_radiation.MaskFactor:P0})" : "no gas mask";
+            var armor = _armor != null ? $"armour body {_armor.BodyClass} / head {_armor.HeadClass}" : "armour -";
+            StatusInfo.Text = $"{rad}  ·  {mask}  ·  {armor}  ·  {_anomalies.Count} anomalies";
         }
 
         private void UpdateDetector(float edgeDistance, float dt)

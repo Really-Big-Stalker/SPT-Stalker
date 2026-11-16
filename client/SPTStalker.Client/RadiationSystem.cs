@@ -36,7 +36,10 @@ namespace SPTStalker.Client
         private float _sicknessTimer;
         private int _stageIndex = -1;
 
-        public float MaskFactor => _maskFactor;
+        public string StageName => _stageIndex >= 0 ? _settings.stages[_stageIndex].name : "clean";
+
+        public float MaskFactor => Mathf.Clamp01(_maskFactor * Plugin.GasMaskEffectiveness.Value);
+        public string MaskName => _maskName;
 
         public RadiationSystem(RadiationSettings settings, ArtifactRadiation[] artifacts, GameObject host)
         {
@@ -65,21 +68,26 @@ namespace SPTStalker.Client
         public void Tick(object player, object health, float ambient, float intake, float dt)
         {
             _health = health;
+            TickScan(player, dt);
 
-            // Every 2 s: what's on your face, and which artifacts you're carrying
+            // Carried artifacts irradiate you directly; a mask doesn't help
+            var carried = _carried * Plugin.ArtifactRadiationMultiplier.Value;
+            var total = intake * Plugin.RadiationIntakeMultiplier.Value + carried;
+            Dose = Mathf.Clamp(Dose + (total - _settings.decayPerSecond * Plugin.DoseDecayMultiplier.Value) * dt, 0, MaxDose);
+
+            Geiger(ambient * Plugin.RadiationIntakeMultiplier.Value + carried, dt);
+            ApplyStage(player, dt);
+        }
+
+        /// <summary>Every 2 s: what's on your face, and which artifacts you're carrying (also runs with radiation off, for gas masks).</summary>
+        public void TickScan(object player, float dt)
+        {
             _scanTimer -= dt;
             if (_scanTimer <= 0)
             {
                 _scanTimer = 2f;
                 Scan(player);
             }
-
-            // Carried artifacts irradiate you directly; a mask doesn't help
-            var total = intake + _carried;
-            Dose = Mathf.Clamp(Dose + (total - _settings.decayPerSecond) * dt, 0, MaxDose);
-
-            Geiger(ambient + _carried, dt);
-            ApplyStage(player, dt);
         }
 
         private void Scan(object player)
@@ -149,7 +157,7 @@ namespace SPTStalker.Client
             {
                 _damageTimer = 1f;
                 var parts = stage.bodyParts == null || stage.bodyParts.Length == 0 ? new[] { "Chest" } : stage.bodyParts;
-                EftBridge.ApplyDamage(_health, parts[Random.Range(0, parts.Length)], stage.damagePerSecond * Plugin.DamageMultiplier.Value,
+                EftBridge.ApplyDamage(_health, parts[Random.Range(0, parts.Length)], stage.damagePerSecond * Plugin.RadiationDamageMultiplier.Value,
                     "RadExposure", EftBridge.PlayerPosition(player), Vector3.up);
             }
 
@@ -192,7 +200,7 @@ namespace SPTStalker.Client
             var tpl = EftBridge.TemplateId(item);
             if (tpl != null && current._cures.TryGetValue(tpl, out var cure))
             {
-                Dose = Mathf.Max(0, Dose - cure.doseReduction);
+                Dose = Mathf.Max(0, Dose - cure.doseReduction * Plugin.CureMultiplier.Value);
                 Plugin.Log.LogInfo($"SPT-Stalker: {cure.name} -{cure.doseReduction:0} radiation (now {Dose:0}/{MaxDose:0})");
             }
         }
