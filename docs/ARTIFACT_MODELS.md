@@ -49,6 +49,10 @@ The script:
 * scales it so its longest side is `--size` metres (`--size 0` keeps the model's own scale), sets
   **Origin to Geometry**, **applies rotation & scale** and centres it at **0,0,0**,
 * reduces it to `--max-tris` (default 10000) if needed,
+* with `--solidify 0.0015`, gives thin open sheets (hoods, petals, membranes) 1.5 mm of thickness and points every face
+  outwards. Use it when a model is made of single-sided surfaces: Tarkov's shaders draw only the front of a face, so
+  such parts look black or see-through from one side. It roughly doubles those triangles, so raise `--max-tris`
+  (e.g. 16000) if needed,
 * unwraps UVs and **bakes one diffuse texture** (plus a normal map if the source had one). Tarkov's specular shader
   expects the look baked into the diffuse texture. Untextured models get their colours and glow baked in.
 * writes `<key>.fbx`, `<key>.blend`, `<key>_diffuse.png`, `[<key>_normal.png]` and `<key>_preview.png` (check this one!)
@@ -92,4 +96,5 @@ missing in game.
 | Preview/icon off-centre | Re-run the prep script (it centres the origin) or move the PreviewPivot position by hand |
 | Item falls through the ground | The Mesh Collider is missing or on the wrong object (it belongs on the child mesh) |
 | Wrong size | Re-run the prep script with a different `--size`, then rebuild |
+| Parts black or see-through from one side | Thin single-sided surfaces: re-run the prep script with `--solidify 0.0015` |
 | Placeholder still shows | Check `bundles.json` lists the bundle and `prefabPath` matches its file name exactly |

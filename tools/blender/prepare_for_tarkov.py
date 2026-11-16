@@ -40,6 +40,9 @@ def parse_args():
     p.add_argument("--texture-size", type=int, default=1024)
     p.add_argument("--out", default=None)
     p.add_argument("--samples", type=int, default=16, help="Cycles bake samples")
+    p.add_argument("--solidify", type=float, default=0.0,
+                   help="give thin open sheets this thickness in metres (e.g. 0.0015) so they render from both "
+                        "sides with Tarkov's single-sided shaders; also points all faces outwards")
     return p.parse_args(argv)
 
 
@@ -150,6 +153,24 @@ def normalise_transform(obj, size):
 
 def triangle_count(obj):
     return sum(len(p.vertices) - 2 for p in obj.data.polygons)
+
+
+def solidify(obj, thickness):
+    """Thicken open surfaces (one-sided sheets look see-through or black from one side in game)."""
+    mod = obj.modifiers.new("solidify", "SOLIDIFY")
+    mod.thickness = thickness
+    mod.offset = 0.0
+    mod.use_even_offset = True
+    mod.use_quality_normals = True
+    mod.use_rim = True
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+    # Every part is now closed: make all faces point outwards
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bm.to_mesh(obj.data)
+    bm.free()
+    obj.data.update()
 
 
 def reduce(obj, max_tris):
@@ -365,6 +386,10 @@ def main():
     import_model(os.path.abspath(args.input))
     obj = single_mesh(args.name)
     normalise_transform(obj, args.size)
+    if args.solidify > 0:
+        tris = triangle_count(obj)
+        solidify(obj, args.solidify)
+        log(f"solidified {args.solidify * 1000:.1f} mm: {tris} -> {triangle_count(obj)} triangles")
     before = triangle_count(obj)
     after = reduce(obj, args.max_tris)
     log(f"{args.name}: {before} -> {after} triangles, size {tuple(round(d, 3) for d in obj.dimensions)} m")
