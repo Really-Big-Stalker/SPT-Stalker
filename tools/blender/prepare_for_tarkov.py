@@ -277,8 +277,10 @@ def final_material(obj, name, textures):
 
     # Keep only the bake UVs so Unity uses them
     me = obj.data
-    for layer in list(me.uv_layers):
-        if layer.name != "bake":
+    # Remove by name, one at a time (references go stale after each removal in Blender 4+/5)
+    for layer_name in [l.name for l in me.uv_layers if l.name != "bake"]:
+        layer = me.uv_layers.get(layer_name)
+        if layer is not None:
             me.uv_layers.remove(layer)
     me.uv_layers["bake"].name = "UVMap"
     for attr in list(me.color_attributes):
